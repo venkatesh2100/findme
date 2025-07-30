@@ -22,6 +22,7 @@ Navigate to both the frontend and backend folders and install the required packa
 npm install
 ```
 
+
 ### 3. Run the App
 
 * **Frontend:**
