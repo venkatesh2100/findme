@@ -42,7 +42,6 @@ export default function UserDataFilters() {
                 <option key={type}>{type}</option>
               ))}
             </select>
-            {/* <ChevronDownIcon className="w-4 h-4 absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 pointer-events-none" /> */}
           </div>
         </div>
       </div>

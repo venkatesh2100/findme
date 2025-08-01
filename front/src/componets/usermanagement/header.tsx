@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Funnel } from "lucide-react";
 
 type HeaderProps = {

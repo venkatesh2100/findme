@@ -43,9 +43,7 @@ const FiltersPanel = ({ filters, setFilters }: Props) => {
     <div className="bg-white  rounded-md p-6 shadow-sm text-sm text-gray-700">
       <h2 className="text-lg font-semibold mb-4">Filter</h2>
       <div className="grid grid-cols-4 gap-6">
-        {/* Column 1 */}
         <div className="space-y-4">
-          {/* Portfolio Type (Placeholder dropdown in image) */}
           <div>
             <p className="font-medium mb-2">Portfolio Type</p>
             <input

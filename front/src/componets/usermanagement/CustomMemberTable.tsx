@@ -55,7 +55,6 @@ const CustomMemberTable = () => {
   });
 
   const filteredData = data.filter((row) => {
-    // Username search filter
     const usernameMatch =
       searchQuery === "" ||
       row.Username.toLowerCase().includes(searchQuery.toLowerCase());
@@ -252,7 +251,6 @@ const CustomMemberTable = () => {
               &lt;
             </button>
 
-            {/* Show only 3 pages at a time */}
             {(() => {
               const currentGroupStart =
                 Math.floor((currentPage - 1) / 3) * 3 + 1;
