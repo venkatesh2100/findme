@@ -70,46 +70,25 @@ app.get("/list-uploads", (req, res) => {
 });
 
 
-app.get('/read-latest-upload', (req, res) => {
-  const uploadDir = path.join(__dirname, 'uploads');
+const mongoose = require("mongoose");
 
-  fs.readdir(uploadDir, (err, files) => {
-    if (err || !files.length) {
-      console.error('❌ No files in uploads folder');
-      return res.status(404).json({ success: false, error: 'No files found' });
-    }
+mongoose.connect("mongodb://localhost:27017/your-db-name", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-    const csvFiles = files.filter((f) => f.endsWith('.csv'));
+const memberSchema = new mongoose.Schema({}, { strict: false });
+const Member = mongoose.model("Member", memberSchema);
 
-    if (!csvFiles.length) {
-      console.error('❌ No CSV file found in /uploads');
-      return res.status(404).json({ success: false, error: 'No CSV file found' });
-    }
-
-    const latestFile = csvFiles
-      .map((file) => ({
-        name: file,
-        time: fs.statSync(path.join(uploadDir, file)).mtime.getTime(),
-      }))
-      .sort((a, b) => b.time - a.time)[0].name;
-
-    const filePath = path.join(uploadDir, latestFile);
-    const results = [];
-
-    console.log('📄 Reading file:', filePath);
-
-    fs.createReadStream(filePath)
-      .pipe(csv())
-      .on('data', (row) => results.push(row))
-      .on('end', () => {
-        console.log('✅ Parsed rows:', results.length);
-        res.json({ success: true, data: results });
-      })
-      .on('error', (err) => {
-        console.error('❌ Parsing failed:', err.message);
-        res.status(500).json({ success: false, error: 'CSV parsing failed' });
-      });
-  });
+// Route to get members from MongoDB
+app.get("/api/members", async (req, res) => {
+  try {
+    const members = await Member.find({});
+    res.json({ success: true, data: members });
+  } catch (error) {
+    console.error("❌ MongoDB fetch failed:", error.message);
+    res.status(500).json({ success: false, error: "Failed to fetch members" });
+  }
 });
 
 
@@ -138,6 +117,3 @@ app.get('/fetch-sharepoint-csv', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Backend server running at http://localhost:${PORT}`);
 });
-
-
-

@@ -101,25 +101,34 @@ const CustomMemberTable = () => {
   );
 
   useEffect(() => {
-    const fetchLatestCSV = async () => {
+    const fetchMembers = async () => {
       try {
-        const res = await fetch("http://localhost:4000/read-latest-upload");
+        const res = await fetch("http://localhost:4000/api/members");
         const json = await res.json();
 
         if (json.success) {
-          setData(json.data);
+          const formatted: Member[] = json.data.map((item: any) => ({
+            "Member Name": item["Member Name"],
+            Username: item.Username,
+            "No. Of Portfolios": item["No. Of Portfolios"]?.toString() || "0",
+            "ID Verification": item["ID Verification"],
+            "Portfolio Verification": item["Portfolio Verification"],
+            Location: item.Location,
+            "Size (KB)": item["Size (KB)"]?.toString() || "0",
+            Subscription: item.Subscription,
+          }));
+          setData(formatted);
         } else {
-          alert("No CSV found in uploads");
+          console.error("❌ Backend error:", json.error);
         }
       } catch (error) {
-        alert("Error fetching CSV");
-        console.error(error);
+        console.error("❌ Network error:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLatestCSV();
+    fetchMembers();
   }, []);
 
   if (loading) return <div className="p-4 text-gray-600">Loading...</div>;
@@ -159,22 +168,6 @@ const CustomMemberTable = () => {
                 <th key={header} className="px-4 py-2 group">
                   <div className="flex items-center justify-between gap-1">
                     <span className="text-left">{header}</span>
-                    <button className="opacity-100 group-hover:opacity-100 transition-opacity">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
-                        />
-                      </svg>
-                    </button>
                   </div>
                 </th>
               ))}
@@ -190,20 +183,12 @@ const CustomMemberTable = () => {
                   {row["No. Of Portfolios"]}
                 </td>
                 <td className="px-4 py-2 text-center">
-                  <span
-                    className={`whitespace-nowrap px-2 py-1 rounded text-xs font-semibold ${getBadgeClass(
-                      row["ID Verification"]
-                    )}`}
-                  >
+                  <span className={getBadgeClass(row["ID Verification"])}>
                     {row["ID Verification"]}
                   </span>
                 </td>
                 <td className="px-4 py-2 text-center">
-                  <span
-                    className={`whitespace-nowrap px-2 py-1 rounded text-xs font-semibold ${getBadgeClass(
-                      row["Portfolio Verification"]
-                    )}`}
-                  >
+                  <span className={getBadgeClass(row["Portfolio Verification"])}>
                     {row["Portfolio Verification"]}
                   </span>
                 </td>
@@ -212,7 +197,6 @@ const CustomMemberTable = () => {
                     const parts = row.Location.split(",");
                     const firstLine = parts.slice(0, -1).join(",").trim();
                     const secondLine = parts.slice(-1)[0].trim();
-
                     return (
                       <div className="flex flex-col leading-tight">
                         <span>{firstLine}</span>
@@ -239,55 +223,43 @@ const CustomMemberTable = () => {
         {/* Pagination UI */}
         <div className="flex items-center justify-center gap-6 px-4 py-4">
           <div className="flex space-x-2">
-            {/* Previous Group */}
             <button
               className="px-3 py-1 rounded bg-gray-200 text-gray-600"
               disabled={currentPage === 1}
-              onClick={() => {
-                const newPage = Math.max(1, currentPage - 3);
-                setCurrentPage(newPage);
-              }}
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 3))}
             >
               &lt;
             </button>
 
-            {(() => {
-              const currentGroupStart =
-                Math.floor((currentPage - 1) / 3) * 3 + 1;
-              const pagesToShow = Array.from(
-                { length: 3 },
-                (_, i) => currentGroupStart + i
-              ).filter((page) => page <= totalPages);
+            {Array.from({ length: 3 }, (_, i) => {
+              const page = Math.floor((currentPage - 1) / 3) * 3 + i + 1;
+              return (
+                page <= totalPages && (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-1 rounded ${
+                      currentPage === page
+                        ? "bg-blue-100 border border-blue-500 text-blue-600"
+                        : "bg-gray-100"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+              );
+            })}
 
-              return pagesToShow.map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`px-3 py-1 rounded ${
-                    currentPage === page
-                      ? "bg-blue-100 border border-blue-500 text-blue-600"
-                      : "bg-gray-100"
-                  }`}
-                >
-                  {page}
-                </button>
-              ));
-            })()}
-
-            {/* Next Group */}
             <button
               className="px-3 py-1 rounded bg-gray-200 text-gray-600"
               disabled={currentPage + 3 > totalPages}
-              onClick={() => {
-                const newPage = Math.min(currentPage + 3, totalPages);
-                setCurrentPage(newPage);
-              }}
+              onClick={() => setCurrentPage(Math.min(currentPage + 3, totalPages))}
             >
               &gt;
             </button>
           </div>
 
-          {/* Rows per page selector */}
+          {/* Rows per page */}
           <div className="flex items-center gap-2">
             <select
               value={rowsPerPage}

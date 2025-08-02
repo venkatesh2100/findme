@@ -28,10 +28,7 @@ export function Sidebar({ onMenuItemClick }) {
       title: "Feedback and Support",
       content: "User feedback and support ticket management...",
     },
-    {
-      title: "CSV Upload and show ⌯⌲",
-      content: <CSVUploader />,
-    },
+
   ];
 
   useEffect(() => {
