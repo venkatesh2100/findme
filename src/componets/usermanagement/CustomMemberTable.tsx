@@ -103,9 +103,9 @@ const CustomMemberTable = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/members");
+        const res = await fetch("/api/members");
         const json = await res.json();
-
+        // console.log(json)
         if (json.success) {
           const formatted: Member[] = json.data.map((item: any) => ({
             "Member Name": item["Member Name"],
@@ -188,7 +188,9 @@ const CustomMemberTable = () => {
                   </span>
                 </td>
                 <td className="px-4 py-2 text-center">
-                  <span className={getBadgeClass(row["Portfolio Verification"])}>
+                  <span
+                    className={getBadgeClass(row["Portfolio Verification"])}
+                  >
                     {row["Portfolio Verification"]}
                   </span>
                 </td>
@@ -253,7 +255,9 @@ const CustomMemberTable = () => {
             <button
               className="px-3 py-1 rounded bg-gray-200 text-gray-600"
               disabled={currentPage + 3 > totalPages}
-              onClick={() => setCurrentPage(Math.min(currentPage + 3, totalPages))}
+              onClick={() =>
+                setCurrentPage(Math.min(currentPage + 3, totalPages))
+              }
             >
               &gt;
             </button>

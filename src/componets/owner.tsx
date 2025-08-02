@@ -8,7 +8,7 @@ export default function HeaderRightProfile() {
       <div className="flex items-center space-x-3">
         <div className="w-9 h-9 rounded-full overflow-hidden">
           <Image
-            src="/o.png" // Replace with correct path
+            src="/o.png" 
             alt="Devanshi Chitalia"
             width={360}
             height={360}

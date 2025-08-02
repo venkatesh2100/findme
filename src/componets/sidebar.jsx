@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Admin from "./admin/page";
 import UserManagement from "./usermanagement/page";
-import CSVUploader from "./usermanagement/CSVupload";
 
 export function Sidebar({ onMenuItemClick }) {
   const [activeItem, setActiveItem] = useState(0);
