@@ -23,15 +23,15 @@ const returningData = [
 const COLORS = ["#009FFD", "#8CDEFC", "#D3F4FF"];
 const returningColors = ["#009FFD", "#D3F4FF"];
 
-const stateData = {
-  CA: { value: 20 },
-  NY: { value: 10 },
-};
+// const stateData = {
+//   CA: { value: 20 },
+//   NY: { value: 10 },
+// };
 
 const TrafficDashboard = () => {
   const [selectedDate, setSelectedDate] = useState("19 January 2025");
   const [timeFrame, setTimeFrame] = useState("daily");
-
+  console.log(timeFrame)
 
   return (
     <div className="min-h-screen p-6 text-sm space-y-6 bg-[#F4F7FA]">
@@ -49,6 +49,7 @@ const TrafficDashboard = () => {
                       : ""
                   }`}
                 >
+
                   {label}
                 </button>
                 {idx < arr.length - 1 && <span className="text-gray-400">|</span>}

@@ -105,9 +105,8 @@ const CustomMemberTable = () => {
       try {
         const res = await fetch("/api/members");
         const json = await res.json();
-        // console.log(json)
         if (json.success) {
-          const formatted: Member[] = json.data.map((item: any) => ({
+          const formatted: Member[] = json.data.map((item:Member) => ({
             "Member Name": item["Member Name"],
             Username: item.Username,
             "No. Of Portfolios": item["No. Of Portfolios"]?.toString() || "0",

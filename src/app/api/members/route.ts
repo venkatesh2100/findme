@@ -2,31 +2,30 @@ import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
 
 const uri = process.env.MONGO_URI as string;
-const dbName = 'USERDATA'; // ✅ updated
-const collectionName = 'PORTFOLIO'; // ✅ updated
-
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
+const dbName = 'USERDATA';
+const collectionName = 'PORTFOLIO';
 
 if (!uri) {
   throw new Error('Please define MONGO_URI in .env.local');
 }
 
-let globalWithMongo = global as typeof globalThis & {
+
+const globalWithMongo = global as typeof globalThis & {
   _mongoClientPromise?: Promise<MongoClient>;
 };
 
 if (!globalWithMongo._mongoClientPromise) {
-  client = new MongoClient(uri);
+  const client = new MongoClient(uri);
   globalWithMongo._mongoClientPromise = client.connect();
 }
-clientPromise = globalWithMongo._mongoClientPromise;
+
+const clientPromise = globalWithMongo._mongoClientPromise;
 
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db(dbName); // ✅ USERDATA
-    const collection = db.collection(collectionName); // ✅ PORTFOLIO
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
 
     const data = await collection.find({}).toArray();
 
