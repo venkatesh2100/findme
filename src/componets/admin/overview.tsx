@@ -8,6 +8,7 @@ import SocialMediaChart from "./socialMediua";
 import UserDataFilters from "./userBar";
 import { ChartCard } from "./chartCard";
 import { StatCard } from "./statCard";
+import Loading from "../../../packages/ui/loading";
 
 // Full data type
 type DashboardData = {
@@ -74,7 +75,7 @@ export default function Overview() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {!dashboardData ? (
-          <div>Loading...</div>
+          <Loading/>
         ) : (
           dashboardData.stats.map((s, i) => <StatCard key={i} {...s} />)
         )}
@@ -83,7 +84,7 @@ export default function Overview() {
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {!dashboardData ? (
-          <div>Loading charts...</div>
+          <Loading />
         ) : (
           <>
             <ChartCard title="Traffic Location">
