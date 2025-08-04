@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import FiltersPanel from "./FilterPanel";
 import HeaderBar from "./header";
+import Loading from "../../../packages/ui/loading";
 
 type Filters = {
   portfolioVerification: string[];
@@ -130,7 +131,7 @@ const CustomMemberTable = () => {
     fetchMembers();
   }, []);
 
-  if (loading) return <div className="p-4 text-gray-600">Loading...</div>;
+  if (loading) return <Loading/>
   if (!data.length)
     return <div className="p-4 text-gray-600">No data available</div>;
 

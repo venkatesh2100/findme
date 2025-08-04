@@ -1,97 +1,136 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
-
-const deviceData = [
-  { name: "Desktop", value: 700 },
-  { name: "Mobile", value: 250 },
-  { name: "Tablet", value: 150 },
-];
-
-const returningData = [
-  { name: "Returning", value: 100 },
-  { name: "New", value: 50 },
-];
-
+import React, { useState, useEffect } from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 const COLORS = ["#009FFD", "#8CDEFC", "#D3F4FF"];
 const returningColors = ["#009FFD", "#D3F4FF"];
 
-// const stateData = {
-//   CA: { value: 20 },
-//   NY: { value: 10 },
-// };
+type DataItem = { name: string; value: number };
+type DashboardData = {
+  deviceSessions: DataItem[];
+  visitorType: DataItem[];
+};
 
 const TrafficDashboard = () => {
   const [selectedDate, setSelectedDate] = useState("19 January 2025");
   const [timeFrame, setTimeFrame] = useState("daily");
-  console.log(timeFrame)
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/api/dashboard?timeFrame=${timeFrame}`);
+        const data = await res.json();
+        setDashboardData({
+          deviceSessions: data.deviceSessions || [],
+          visitorType: data.visitorType || [],
+        });
+      } catch (error) {
+        console.error("Failed to fetch traffic data", error);
+      }
+    };
+
+    fetchData();
+  }, [timeFrame]);
+
+  const deviceData = dashboardData?.deviceSessions || [];
+  const returningData = dashboardData?.visitorType || [];
+
+  const totalSessions = deviceData.reduce((sum, d) => sum + d.value, 0);
+  const totalVisitors = returningData.reduce((sum, d) => sum + d.value, 0);
+  const stateSessions = [
+    { state: "NY", value: 10 },
+    { state: "CA", value: 20 },
+  ];
+
+  const maxSessions = Math.max(...stateSessions.map((s) => s.value));
+  if (!dashboardData) {
+    return (
+      <div className="text-center text-gray-500 py-10">
+        Loading traffic data...
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen p-6 text-sm space-y-6 bg-[#F4F7FA]">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-        <h1 className="text-3xl font-bold text-[#1F1F1F] mb-2">Traffic Data</h1>
-        <div className="flex gap-3 text-sm text-gray-600">
+    <div className="min-h-screen px-6 py-6 space-y-8 ">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center ">
+        <h1 className="text-2xl font-semibold text-[#1F1F1F] mr-10 ">
+          Traffic Data
+        </h1>
+
+        <div className="flex gap-3 mt-2 sm:mt-0 text-sm text-gray-600 flex-wrap">
           {["Daily", "Weekly", "Monthly", "Yearly", "Till Date"].map(
             (label, idx, arr) => (
               <span key={label} className="flex items-center gap-1">
                 <button
                   onClick={() => setTimeFrame(label.toLowerCase())}
-                  className={`$ {
+                  className={`transition-colors ${
                     timeFrame === label.toLowerCase()
-                      ? "text-blue-600 font-semibold"
-                      : ""
+                      ? "text-[#2563EB] font-semibold"
+                      : "text-gray-500"
                   }`}
                 >
-
                   {label}
                 </button>
-                {idx < arr.length - 1 && <span className="text-gray-400">|</span>}
+                {idx < arr.length - 1 && (
+                  <span className="text-gray-300">|</span>
+                )}
               </span>
             )
           )}
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-gray-600 mb-1 text-sm">Select Time Period</label>
-            <input
-              type="text"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2 w-full text-sm"
-            />
+      <div className="w-full border-b-2 border-black mt-1 mb-8"></div>
+
+      {/* Date Picker and Stats */}
+      <div className="space-y-4 flex ">
+        <div className="mr-10">
+          <label className="block text-gray-600 mb-1 text-sm ">
+            Select Time Period
+          </label>
+          <input
+            type="text"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            className="border border-gray-300 rounded-lg px-10  py-2 w-full text-sm shadow-sm"
+          />
+        </div>
+        <div className="flex  gap-3">
+          <div className="bg-white p-4  px-10 rounded-xl shadow-sm">
+            <p className="text-gray-500 text-xs">Site Sessions</p>
+            <h2 className="text-xl font-bold text-[#1F1F1F]">
+              {totalSessions}
+            </h2>
+            <p className="text-green-500 text-xs mt-1">+32%</p>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white p-4 rounded-xl shadow">
-              <p className="text-gray-500 text-xs">Site Sessions</p>
-              <h2 className="text-xl font-bold">1100</h2>
-              <p className="text-green-500 text-xs mt-1">+32%</p>
-            </div>
-            <div className="bg-white p-4 rounded-xl shadow">
-              <p className="text-gray-500 text-xs">Unique Visitors</p>
-              <h2 className="text-xl font-bold">150</h2>
-              <p className="text-green-500 text-xs mt-1">+33%</p>
-            </div>
+          <div className="bg-white p-4 px-10 rounded-xl shadow-sm">
+            <p className="text-gray-500 text-xs">Unique Visitors</p>
+            <h2 className="text-xl font-bold text-[#1F1F1F]">
+              {totalVisitors}
+            </h2>
+            <p className="text-green-500 text-xs mt-1">+33%</p>
           </div>
         </div>
+      </div>
 
-        <div className="bg-white p-4 rounded-xl shadow space-y-4">
-          <div className="text-sm font-semibold mb-1">Sessions by Device</div>
+      {/* Device + Returning Visitors */}
+      <div className="flex flex-col lg:flex-row gap-6 mt-10">
+        {/* Sessions by Device */}
+        <div className="bg-white flex-1 p-4 rounded-xl shadow-sm space-y-4">
+          <div className="text-sm font-semibold">Sessions by Device</div>
           <ul className="space-y-1 text-xs">
             {deviceData.map((d, i) => (
               <li key={i} className="flex items-center gap-2">
                 <span
                   className="inline-block w-3 h-3 rounded-full"
-                  style={{ background: COLORS[i] }}
+                  style={{ background: COLORS[i % COLORS.length] }}
                 ></span>
                 {d.name} — {d.value}
               </li>
@@ -107,6 +146,23 @@ const TrafficDashboard = () => {
                 outerRadius={80}
                 paddingAngle={2}
                 dataKey="value"
+                labelLine={false}
+                label={({ cx, cy }) => (
+                  <text
+                    x={cx}
+                    y={cy}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="fill-gray-800"
+                  >
+                    <tspan x={cx} dy="-0.5em" className="text-xs ">
+                      Site Sessions
+                    </tspan>
+                    <tspan x={cx} dy="1.2em" className="text-lg font-bold">
+                      {totalSessions}
+                    </tspan>
+                  </text>
+                )}
               >
                 {deviceData.map((_, index) => (
                   <Cell
@@ -117,17 +173,19 @@ const TrafficDashboard = () => {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
-          <p className="text-center font-bold text-lg">1100</p>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow space-y-4">
-          <div className="text-sm font-semibold mb-1">New vs Returning Visitors</div>
+        {/* Returning vs New */}
+        <div className="bg-white flex-1 p-4 rounded-xl shadow-sm space-y-4">
+          <div className="text-sm font-semibold">New vs Returning Visitors</div>
           <ul className="space-y-1 text-xs">
             {returningData.map((d, i) => (
               <li key={i} className="flex items-center gap-2">
                 <span
                   className="inline-block w-3 h-3 rounded-full"
-                  style={{ background: returningColors[i] }}
+                  style={{
+                    background: returningColors[i % returningColors.length],
+                  }}
                 ></span>
                 {d.name} — {d.value}
               </li>
@@ -143,6 +201,22 @@ const TrafficDashboard = () => {
                 outerRadius={80}
                 paddingAngle={2}
                 dataKey="value"
+                label={({ cx, cy }) => (
+                  <text
+                    x={cx}
+                    y={cy}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="fill-gray-800"
+                  >
+                    <tspan x={cx} dy="-0.5em" className="text-xs ">
+                      Site Sessions
+                    </tspan>
+                    <tspan x={cx} dy="1.2em" className="text-lg font-bold">
+                      {totalSessions}
+                    </tspan>
+                  </text>
+                )}
               >
                 {returningData.map((_, index) => (
                   <Cell
@@ -153,32 +227,56 @@ const TrafficDashboard = () => {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
-          <p className="text-center font-bold text-lg">150</p>
+          <p className="text-center font-bold text-lg">{totalVisitors}</p>
         </div>
       </div>
-
-      <div className="bg-white p-4 rounded-xl shadow">
-        <label className="block text-gray-600 mb-2 text-sm">Select Country</label>
-        <select className="border border-gray-300 rounded px-3 py-2 w-full mb-4 text-sm">
+      <div>
+        <label className="block text-gray-600  text-sm">Select Country</label>
+        <select className="border border-gray-300 rounded-lg px-3 py-2 w-70 text-sm bg-white shadow-sm">
           <option>United States</option>
         </select>
-
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-          <p className="font-semibold text-sm">Sessions by United States</p>
-          <ul className="text-xs text-right space-y-1">
-            <li>NY &rarr; 10</li>
-            <li>CA &rarr; 20</li>
-          </ul>
-        </div>
-
-        <div className="border-2 border-purple-300 rounded-lg overflow-hidden">
+      </div>
+      {/* Country Map Section */}
+      <div className="bg-white p-4 rounded-xl shadow-sm space-y-4 mt-10">
+        <div className="border-2 flex border-[#D2D6F9] rounded-xl overflow-hidden">
           <div className="w-full h-[600px]">
-            {/* <USAMap customize={mapStatesCustomConfig()} /> */}
+            <div className="ml-4 mt-2 text-sm font-bold">
+              Session by United States
+            </div>
             <Image
-            src="/usa.png"
-            width={600}
-            height={600}
-            alt="USA Map" />
+              src="/usa.png"
+              alt="USA Map"
+              width={600}
+              height={600}
+              className="object-cover w-full h-full"
+            />
+          </div>
+          <div className=" p-4 rounded-xl pr-10 space-y-4">
+            {/* Country Selector */}
+            <div className="flex items-center gap-2 text-gray-700 text-sm font-medium">
+              <ChevronLeft size={16} />
+              <span>USA</span>
+            </div>
+
+            {/* States Sessions */}
+            <div className="space-y-4">
+              {stateSessions.map(({ state, value }) => (
+                <div key={state}>
+                  <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
+                    <div className="flex items-center gap-1">
+                      {state} <ChevronRight size={14} />
+                    </div>
+                    <span>{value}</span>
+                  </div>
+                  <div className="w-full h-2 bg-gray-200 rounded-full mt-1">
+                    <div
+                      className="h-2 bg-blue-400 rounded-full"
+                      style={{ width: `${(value / maxSessions) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

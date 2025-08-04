@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Admin from "./admin/page";
 import UserManagement from "./usermanagement/page";
+import Loading from "../../packages/ui/loading";
 
 export function Sidebar({ onMenuItemClick }) {
   const [activeItem, setActiveItem] = useState(0);
@@ -17,15 +18,15 @@ export function Sidebar({ onMenuItemClick }) {
     },
     {
       title: "Admin Tools",
-      content: "Administrative tools and configuration options...",
+      content: <Loading />,
     },
     {
       title: "Performance Metric",
-      content: "System performance metrics and reports...",
+      content: <Loading/>,
     },
     {
       title: "Feedback and Support",
-      content: "User feedback and support ticket management...",
+      content: <Loading/>,
     },
 
   ];
