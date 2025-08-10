@@ -25,6 +25,7 @@ export default function DashboardOverview() {
       </div>
 
       {/* User Verification */}
+      {/* User Verification */}
       <h2 className="text-[15px] font-bold mt-10 mb-4">User Verification</h2>
       <div className="grid grid-cols-2 gap-4">
         {/* Requests Pending */}
@@ -36,7 +37,6 @@ export default function DashboardOverview() {
           </div>
           <div className="flex justify-between mb-2">
             <p className="text-[22px] font-semibold mb-3">25</p>
-
             <button className="flex items-center gap-1 text-white bg-black px-3 py-0.5 rounded-full text-xs hover:bg-gray-800 transition">
               Expand
               <svg
@@ -45,7 +45,7 @@ export default function DashboardOverview() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="size-3" // Reduced from size-4
+                className="size-3"
               >
                 <path
                   strokeLinecap="round"
@@ -55,22 +55,22 @@ export default function DashboardOverview() {
               </svg>
             </button>
           </div>
-          <table className="w-full text-sm">
+          <table className="w-full text-sm border text-center  border-gray-300">
             <tbody>
-              <tr className="border-t border-gray-200">
-                <td className="py-2">Sam Owens</td>
-                <td className="py-2 ">samowens678</td>
-                <td className="py-2 ">Submitted 5 min ago</td>
+              <tr className="border-t border-b border-gray-300">
+                <td className="py-2 border-r border-gray-300">Sam Owens</td>
+                <td className="py-2 border-r border-gray-300">samowens678</td>
+                <td className="py-2">Submitted 5 min ago</td>
               </tr>
-              <tr className="border-t border-gray-200">
-                <td className="py-2">John Doe</td>
-                <td className="py-2 ">johndoe0000</td>
-                <td className="py-2 ">Submitted 15 min ago</td>
+              <tr className="border-t border-b border-gray-300">
+                <td className="py-2 border-r border-gray-300">John Doe</td>
+                <td className="py-2 border-r border-gray-300">johndoe0000</td>
+                <td className="py-2">Submitted 15 min ago</td>
               </tr>
-              <tr className="border-t border-gray-200">
-                <td className="py-2">Jane Smith</td>
-                <td className="py-2 ">janesmith1234</td>
-                <td className="py-2 ">Submitted 1 hr ago</td>
+              <tr className="border-t border-b border-gray-300">
+                <td className="py-2 border-r border-gray-300">Jane Smith</td>
+                <td className="py-2 border-r border-gray-300">janesmith1234</td>
+                <td className="py-2">Submitted 1 hr ago</td>
               </tr>
             </tbody>
           </table>
@@ -85,7 +85,6 @@ export default function DashboardOverview() {
           </div>
           <div className="flex justify-between mb-2">
             <p className="text-[22px] font-semibold mb-3">578</p>
-
             <button className="flex items-center gap-1 text-white bg-black px-3 py-0.5 rounded-full text-xs hover:bg-gray-800 transition">
               Expand
               <svg
@@ -94,7 +93,7 @@ export default function DashboardOverview() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="size-3" // Reduced from size-4
+                className="size-3"
               >
                 <path
                   strokeLinecap="round"
@@ -104,22 +103,39 @@ export default function DashboardOverview() {
               </svg>
             </button>
           </div>
-          <table className="w-full text-sm">
+          <table className="w-full text-sm border text-center border-gray-300">
             <tbody>
-              <tr className="border-t border-gray-200">
-                <td className="py-2 text-green-500">Alice Brown</td>
-                <td className="py-2 ">alicebrown2000</td>
-                <td className="py-2 ">Submitted 5 min ago</td>
+              <tr className="border-t border-b border-gray-300">
+                <td className="py-2 border-r border-gray-300 flex items-center justify-center">
+                  <svg className="w-2 h-2 mr-1" viewBox="0 0 10 10">
+                    <circle cx="5" cy="5" r="5" fill="#10B981" /> {/* Green */}
+                  </svg>
+                  Alice Brown
+                </td>{" "}
+                <td className="py-2 border-r border-gray-300">
+                  alicebrown2000
+                </td>
+                <td className="py-2">Submitted 5 min ago</td>
               </tr>
-              <tr className="border-t border-gray-200">
-                <td className="py-2 text-red-500">Bob Martin</td>
-                <td className="py-2 ">robertsmith99</td>
-                <td className="py-2 ">Submitted 15 min ago</td>
+              <tr className="border-t border-b border-gray-300">
+                <td className="py-2 border-r border-gray-300 flex items-center justify-center">
+                  <svg className="w-2 h-2 mr-1" viewBox="0 0 10 10">
+                    <circle cx="5" cy="5" r="5" fill="#EF4444" />
+                  </svg>
+                  Bob Martin
+                </td>{" "}
+                <td className="py-2 border-r border-gray-300">robertsmith99</td>
+                <td className="py-2">Submitted 15 min ago</td>
               </tr>
-              <tr className="border-t border-gray-200">
-                <td className="py-2 text-orange-500">Emma James</td>
-                <td className="py-2 ">emmajames543</td>
-                <td className="py-2 ">Submitted 1 hr ago</td>
+              <tr className="border-t border-b border-gray-300">
+                <td className="py-2 border-r border-gray-300 flex items-center justify-center">
+                  <svg className="w-2 h-2 mr-1" viewBox="0 0 10 10">
+                    <circle cx="5" cy="5" r="5" fill="#10B981" />
+                  </svg>
+                  Emma James
+                </td>{" "}
+                <td className="py-2 border-r border-gray-300">emmajames543</td>
+                <td className="py-2">Submitted 1 hr ago</td>
               </tr>
             </tbody>
           </table>
@@ -163,7 +179,7 @@ export default function DashboardOverview() {
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-200  text-left">
+            <tr className="border-b border-gray-300  text-left">
               <th className="py-2">Title</th>
               <th className="py-2">Status</th>
               <th className="py-2">Conversions Rate</th>
@@ -171,19 +187,19 @@ export default function DashboardOverview() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t border-gray-200">
+            <tr className="border-t border-gray-300">
               <td className="py-2">Buy 1 Get 1 Free</td>
               <td className="py-2 ">Expires 3 days</td>
               <td className="py-2">22%</td>
               <td className="py-2">1,240</td>
             </tr>
-            <tr className="border-t border-gray-200">
+            <tr className="border-t border-gray-300">
               <td className="py-2">30% off Selected Items</td>
               <td className="py-2 ">Expires 1 day</td>
               <td className="py-2">19%</td>
               <td className="py-2">1,090</td>
             </tr>
-            <tr className="border-t border-gray-200">
+            <tr className="border-t border-gray-300">
               <td className="py-2">Black Friday Sale</td>
               <td className="py-2 ">Expired 1 week</td>
               <td className="py-2">25%</td>
