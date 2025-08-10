@@ -12,7 +12,7 @@ export default function Home() {
       <Sidebar
         onMenuItemClick={(content: React.ReactNode) => setContent(content)}
       />
-      <main className="flex-1 bg-[#e6f0fa] p-6">
+      <main className="flex-1 bg-[#e6f0fa] p">
           <HeaderRightProfile />
         {/* Header with owner profile */}
         <div className="flex justify-end mb-4">

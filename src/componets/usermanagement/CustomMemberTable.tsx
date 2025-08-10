@@ -32,7 +32,7 @@ const getBadgeClass = (status: string) => {
     case "not verified":
       return "bg-[#093488] text-white rounded-full px-2 py-2 font-semibold";
     case "in progress":
-      return "bg-blue-200 text-black rounded-full px-2 py-2 font-semibold";
+      return "bg-[#D1EFFE] text-[#53A8F3] rounded-full px-2 py-2 font-semibold";
     default:
       return "bg-gray-200 text-black rounded-full px-2 py-2 font-semibold";
   }
