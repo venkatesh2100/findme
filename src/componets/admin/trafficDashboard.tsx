@@ -244,7 +244,7 @@ const TrafficDashboard = () => {
               Session by United States
             </div>
             <Image
-              src="/usa.png"
+              src="/USA.png"
               alt="USA Map"
               width={600}
               height={600}
