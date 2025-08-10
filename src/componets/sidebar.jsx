@@ -4,7 +4,8 @@ import Image from "next/image";
 import Admin from "./admin/page";
 import UserManagement from "./usermanagement/page";
 import Loading from "../../packages/ui/loading";
-
+import AdminTools from "./AdminTools/page";
+import Settings from "./settings/page"
 export function Sidebar({ onMenuItemClick }) {
   const [activeItem, setActiveItem] = useState("admin");
 
@@ -15,7 +16,7 @@ export function Sidebar({ onMenuItemClick }) {
       label: "User Management and Profile Analytics",
       content: <UserManagement />,
     },
-    { id: "tools", label: "Admin", content: <Loading /> },
+    { id: "tools", label: "Admin Tools", content:<AdminTools/>  },
     { id: "performance", label: "Performance Metric", content: <Loading /> },
     { id: "feedback", label: "Feedback and Support", content: <Loading /> },
   ];
@@ -44,15 +45,14 @@ export function Sidebar({ onMenuItemClick }) {
           >
             {/* Blue vertical bar */}
             <div
-              className={`w-1 rounded-r transition-colors duration-200 ${
-                activeItem === item.id ? "bg-blue-500" : "bg-transparent"
-              }`}
+              className={`w-1 rounded-r transition-colors duration-200 ${activeItem === item.id ? "bg-blue-500" : "bg-transparent"
+                }`}
             />
             {/* Icon & text container */}
             <div className="flex items-center gap-3  px-4 pr-8 py-2 w-full">
               {item.icon ? (
                 <Image
-                 src={activeItem==='admin' && item.activeIcon ? item.activeIcon : item.icon}
+                  src={activeItem === 'admin' && item.activeIcon ? item.activeIcon : item.icon}
                   alt={item.label}
                   width={20}
                   height={20}
@@ -62,11 +62,10 @@ export function Sidebar({ onMenuItemClick }) {
                 <div className="w-4" />
               )}
               <span
-                className={`transition-colors leading-none ${
-                  activeItem === item.id
-                    ? "text-blue-600 font-semibold"
-                    : "text-gray-500 group-hover:text-gray-700"
-                }`}
+                className={`transition-colors leading-none ${activeItem === item.id
+                  ? "text-blue-600 font-semibold"
+                  : "text-gray-500 group-hover:text-gray-700"
+                  }`}
               >
                 {item.label}
               </span>
@@ -76,10 +75,10 @@ export function Sidebar({ onMenuItemClick }) {
 
         {/* Settings & Logout */}
         <div className="pt-40 space-y-4 text-sm text-gray-600 px-6">
-          <div className="cursor-pointer hover:text-blue-500 flex items-center gap-2">
+          <button  onClick={() => handleClick("settings", <Settings/>)}className="cursor-pointer hover:text-blue-500 flex items-center gap-2">
             <Image src="/set.png" alt="Settings" width={24} height={24} />
             <span>Settings</span>
-          </div>
+          </button>
           <div className="cursor-pointer hover:text-blue-500 flex items-center gap-2">
             <Image src="/out.png" alt="Logout" width={24} height={23} />
             <span>Logout</span>
