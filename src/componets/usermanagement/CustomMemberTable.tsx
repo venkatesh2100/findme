@@ -28,13 +28,13 @@ type Member = {
 const getBadgeClass = (status: string) => {
   switch (status?.toLowerCase()) {
     case "verified":
-      return "bg-blue-300 text-gray-700 rounded-full px-4 py-2 font-semibold";
+      return "bg-[#A4DCFD] text-[#2C678A] rounded-full px-2 py-2 font-semibold";
     case "not verified":
-      return "bg-blue-900 text-white rounded-full px-4 py-2 font-semibold";
+      return "bg-[#093488] text-white rounded-full px-2 py-2 font-semibold";
     case "in progress":
-      return "bg-blue-200 text-black rounded-full px-4 py-2 font-semibold";
+      return "bg-blue-200 text-black rounded-full px-2 py-2 font-semibold";
     default:
-      return "bg-gray-200 text-black rounded-full px-4 py-2 font-semibold";
+      return "bg-gray-200 text-black rounded-full px-2 py-2 font-semibold";
   }
 };
 
@@ -182,7 +182,7 @@ const CustomMemberTable = () => {
                 <td className="px-4 py-2 text-center">
                   {row["No. Of Portfolios"]}
                 </td>
-                <td className="px-4 py-2 text-center">
+                <td className=" py-2 text-center">
                   <span className={getBadgeClass(row["ID Verification"])}>
                     {row["ID Verification"]}
                   </span>
