@@ -4,8 +4,8 @@
 
 Fydme is a full-stack portfolio management platform.
 
-I update the recent code  with **MongoDB** as the database.
-It store  the  portfolio details,  daily/weekly metrics, and dynamically render data in graphs, numeric metrics, and more.
+- I update the recent code  with **MongoDB** as the database.
+- It store  the  portfolio details,  daily/weekly metrics, and dynamically render data in graphs, numeric metrics, and more.
 ---
 
 ## **Features**
