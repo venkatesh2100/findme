@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RocketCard } from "./rocketcard";
+import  RocketCard  from "./rocketcard";
 import Overview from "./overview"; // Make sure this path is correct
 import TrafficDashboard from "./trafficDashboard"; // Make sure this path is correct
 
@@ -11,7 +11,7 @@ export default function Admin() {
       <RocketCard />
 
       {/* Tabs */}
-      <div className="border-b border-gray-200 pb-2 flex gap-4 text-sm mt-6">
+      <div className="border-b border-gray-200 pb-2 px-6 flex gap-4 text-sm mt-6">
         <button
           className={`font-bold ${
             activeTab === "overview" ? "text-blue-600" : "text-gray-600"

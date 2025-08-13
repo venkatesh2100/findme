@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import FiltersPanel from "./FilterPanel";
 import HeaderBar from "./header";
@@ -15,6 +15,7 @@ type Filters = {
 };
 
 type Member = {
+  avatar?: string;
   "Member Name": string;
   Username: string;
   "No. Of Portfolios": string;
@@ -28,13 +29,13 @@ type Member = {
 const getBadgeClass = (status: string) => {
   switch (status?.toLowerCase()) {
     case "verified":
-      return "bg-[#A4DCFD] text-[#2C678A] rounded-full px-2 py-2 font-semibold";
+      return "bg-[#A4DCFD] text-[#2C678A]";
     case "not verified":
-      return "bg-[#093488] text-white rounded-full px-2 py-2 font-semibold";
+      return "bg-[#093488] text-white";
     case "in progress":
-      return "bg-[#D1EFFE] text-[#53A8F3] rounded-full px-2 py-2 font-semibold";
+      return "bg-[#D1EFFE] text-[#53A8F3]";
     default:
-      return "bg-gray-200 text-black rounded-full px-2 py-2 font-semibold";
+      return "bg-gray-200 text-black";
   }
 };
 
@@ -107,7 +108,8 @@ const CustomMemberTable = () => {
         const res = await fetch("/api/members");
         const json = await res.json();
         if (json.success) {
-          const formatted: Member[] = json.data.map((item:Member) => ({
+          const formatted: Member[] = json.data.map((item: Member) => ({
+            avatar: item.avatar || "", // no default here, we handle fallback later
             "Member Name": item["Member Name"],
             Username: item.Username,
             "No. Of Portfolios": item["No. Of Portfolios"]?.toString() || "0",
@@ -118,11 +120,9 @@ const CustomMemberTable = () => {
             Subscription: item.Subscription,
           }));
           setData(formatted);
-        } else {
-          console.error("❌ Backend error:", json.error);
         }
       } catch (error) {
-        console.error("❌ Network error:", error);
+        console.error("❌ Error fetching members:", error);
       } finally {
         setLoading(false);
       }
@@ -131,7 +131,7 @@ const CustomMemberTable = () => {
     fetchMembers();
   }, []);
 
-  if (loading) return <Loading/>
+  if (loading) return <Loading />;
   if (!data.length)
     return <div className="p-4 text-gray-600">No data available</div>;
 
@@ -151,138 +151,176 @@ const CustomMemberTable = () => {
         </div>
       )}
 
-      <div className="p-4 bg-white text-gray-600 rounded-lg shadow-md overflow-x-auto">
-        <table className="min-w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              {[
-                "Member Name",
-                "Username",
-                "No. Of Portfolios",
-                "ID Verification",
-                "Portfolio Verification",
-                "Location",
-                "Size",
-                "Subscription",
-              ].map((header) => (
-                <th key={header} className="px-4 py-2 group">
-                  <div className="flex items-center justify-between gap-1">
-                    <span className="text-left">{header}</span>
+      <div
+  className="p-4 bg-white text-gray-600 rounded-lg shadow-md"
+  style={{
+    scrollbarGutter: "stable both-edges",
+  }}
+>
+  {/* Scroll container */}
+  <div
+    className="overflow-x-auto overflow-y-auto"
+    style={{
+      maxWidth:"1100px",
+      maxHeight: "500x", // vertical scroll trigger
+      whiteSpace: "nowrap", // key for horizontal scroll with no wrap
+    }}
+  >
+    <table className="text-sm min-w-max">
+      <thead className="bg-gray-50 text-gray-500 text-xs uppercase sticky top-0 z-10">
+        <tr>
+          {[
+            "Member Name",
+            "Username",
+            "No. Of Portfolios",
+            "ID Verification",
+            "Portfolio Verification",
+            "Location",
+            "Size",
+            "Subscription",
+          ].map((header) => (
+            <th
+              key={header}
+              className="px-4 py-2 text-left whitespace-nowrap"
+            >
+              {header}
+            </th>
+          ))}
+          <th className="px-4 py-2"></th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-gray-100">
+        {paginatedData.map((row, idx) => (
+          <tr key={idx} className="hover:bg-gray-50">
+            <td className="px-4 py-2 flex items-center gap-3 whitespace-nowrap">
+              <span className="w-5 h-5 flex items-center justify-center rounded-full text-gray-700 text-xl font-bold">
+                +
+              </span>
+              {row.avatar ? (
+                <Image
+                  src={row.avatar}
+                  alt={row["Member Name"]}
+                  width={32}
+                  height={32}
+                  className="rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold">
+                  {row["Member Name"].charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span className="font-medium">{row["Member Name"]}</span>
+            </td>
+            <td className="px-4 py-2 text-gray-500 whitespace-nowrap">
+              {row.Username}
+            </td>
+            <td className="px-4 py-2 text-center whitespace-nowrap">
+              {row["No. Of Portfolios"]}
+            </td>
+            <td className="py-2 text-center whitespace-nowrap">
+              <span
+                className={`${getBadgeClass(
+                  row["ID Verification"]
+                )} rounded-full px-3 py-2 text-xs font-semibold`}
+              >
+                {row["ID Verification"]}
+              </span>
+            </td>
+            <td className="px-4 py-2 text-center whitespace-nowrap">
+              <span
+                className={`${getBadgeClass(
+                  row["Portfolio Verification"]
+                )} rounded-full px-3 py-2 text-xs font-semibold`}
+              >
+                {row["Portfolio Verification"]}
+              </span>
+            </td>
+            <td className="px-4 py-2 text-center whitespace-nowrap">
+              {(() => {
+                const parts = row.Location.split(",");
+                const firstLine = parts.slice(0, -1).join(",").trim();
+                const secondLine = parts.slice(-1)[0]?.trim();
+                return (
+                  <div className="flex flex-col leading-tight">
+                    <span>{firstLine}</span>
+                    <span className="text-gray-500">{secondLine}</span>
                   </div>
-                </th>
-              ))}
-              <th className="px-4 py-2"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {paginatedData.map((row, idx) => (
-              <tr key={idx} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{row["Member Name"]}</td>
-                <td className="px-4 py-2">{row.Username}</td>
-                <td className="px-4 py-2 text-center">
-                  {row["No. Of Portfolios"]}
-                </td>
-                <td className=" py-2 text-center">
-                  <span className={getBadgeClass(row["ID Verification"])}>
-                    {row["ID Verification"]}
-                  </span>
-                </td>
-                <td className="px-4 py-2 text-center">
-                  <span
-                    className={getBadgeClass(row["Portfolio Verification"])}
-                  >
-                    {row["Portfolio Verification"]}
-                  </span>
-                </td>
-                <td className="px-4 py-2 text-center">
-                  {(() => {
-                    const parts = row.Location.split(",");
-                    const firstLine = parts.slice(0, -1).join(",").trim();
-                    const secondLine = parts.slice(-1)[0].trim();
-                    return (
-                      <div className="flex flex-col leading-tight">
-                        <span>{firstLine}</span>
-                        <span>{secondLine}</span>
-                      </div>
-                    );
-                  })()}
-                </td>
-                <td className="px-4 py-2 text-right">
-                  {Number(row["Size (KB)"]).toLocaleString(undefined, {
-                    maximumFractionDigits: 0,
-                  })}{" "}
-                  KB
-                </td>
-                <td className="px-4 py-2 text-center">{row.Subscription}</td>
-                <td className="px-4 py-2 text-center text-gray-400 font-bold">
-                  ⋮
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                );
+              })()}
+            </td>
+            <td className="px-4 py-2 text-right whitespace-nowrap">
+              {Number(row["Size (KB)"]).toLocaleString()} KB
+            </td>
+            <td className="px-4 py-2 text-center whitespace-nowrap">
+              {row.Subscription}
+            </td>
+            <td className="px-4 py-2 text-center text-gray-400 font-bold">
+              ⋮
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 
-        {/* Pagination UI */}
-        <div className="flex items-center justify-center gap-6 px-4 py-4">
-          <div className="flex space-x-2">
+  {/* Pagination controls */}
+  <div className="flex items-center justify-center gap-6 px-4 py-4  bottom-0 bg-white">
+    <div className="flex space-x-2">
+      <button
+        className="px-3 py-2 rounded bg-gray-200 text-gray-600"
+        disabled={currentPage === 1}
+        onClick={() => setCurrentPage(Math.max(1, currentPage - 3))}
+      >
+        &lt;
+      </button>
+      {Array.from({ length: 3 }, (_, i) => {
+        const page = Math.floor((currentPage - 1) / 3) * 3 + i + 1;
+        return (
+          page <= totalPages && (
             <button
-              className="px-3 py-1 rounded bg-gray-200 text-gray-600"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(Math.max(1, currentPage - 3))}
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`px-3 py-2 rounded ${
+                currentPage === page
+                  ? "bg-blue-100 border border-blue-500 text-blue-600"
+                  : "bg-gray-100"
+              }`}
             >
-              &lt;
+              {page}
             </button>
+          )
+        );
+      })}
+      <button
+        className="px-3 py-2 rounded bg-gray-200 text-gray-600"
+        disabled={currentPage + 3 > totalPages}
+        onClick={() =>
+          setCurrentPage(Math.min(currentPage + 3, totalPages))
+        }
+      >
+        &gt;
+      </button>
+    </div>
+    <div className="flex items-center gap-2">
+      <select
+        value={rowsPerPage}
+        onChange={(e) => {
+          setRowsPerPage(Number(e.target.value));
+          setCurrentPage(1);
+        }}
+        className="border rounded px-2 py-2"
+      >
+        {[10, 20, 50, 100].map((num) => (
+          <option key={num} value={num}>
+            {num}
+          </option>
+        ))}
+      </select>
+      <span>/Page</span>
+    </div>
+  </div>
+</div>
 
-            {Array.from({ length: 3 }, (_, i) => {
-              const page = Math.floor((currentPage - 1) / 3) * 3 + i + 1;
-              return (
-                page <= totalPages && (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-1 rounded ${
-                      currentPage === page
-                        ? "bg-blue-100 border border-blue-500 text-blue-600"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                )
-              );
-            })}
-
-            <button
-              className="px-3 py-1 rounded bg-gray-200 text-gray-600"
-              disabled={currentPage + 3 > totalPages}
-              onClick={() =>
-                setCurrentPage(Math.min(currentPage + 3, totalPages))
-              }
-            >
-              &gt;
-            </button>
-          </div>
-
-          {/* Rows per page */}
-          <div className="flex items-center gap-2">
-            <select
-              value={rowsPerPage}
-              onChange={(e) => {
-                setRowsPerPage(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-              className="border rounded px-2 py-1"
-            >
-              {[10, 20, 50, 100].map((num) => (
-                <option key={num} value={num}>
-                  {num}
-                </option>
-              ))}
-            </select>
-            <span>/Page</span>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

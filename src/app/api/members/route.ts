@@ -2,11 +2,11 @@ import { MongoClient } from 'mongodb';
 import { NextResponse } from 'next/server';
 
 const uri = process.env.MONGO_URI as string;
-const dbName = 'USERDATA';
-const collectionName = 'PORTFOLIO';
+const dbName = 'test';
+const collectionName = 'admin-portfoliodb';
 
 if (!uri) {
-  throw new Error('Please define MONGO_URI in .env.local');
+  throw new Error('Please define MONGO_URI in .env');
 }
 
 

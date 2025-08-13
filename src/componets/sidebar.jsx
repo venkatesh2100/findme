@@ -27,8 +27,8 @@ export function Sidebar({ onMenuItemClick }) {
   };
 
   return (
-    <aside className="w-76 min-h-screen bg-white shadow-md flex flex-col justify-between">
-      <div className="pr-6">
+    <aside className="w-[280px] min-h-screen m bg-white shadow-md flex flex-col justify-between">
+      <div className="pr-6 mt-26">
         {/* Header */}
         <h2 className="text-lg font-semibold mb-8 text-center px-6 pt-8 text-gray-800">
           Welcome to
