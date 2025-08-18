@@ -1,26 +1,30 @@
 "use client";
-import React, { useState } from "react";
-import Admin from "../componets/admin/page";
-import { Sidebar } from "../componets/sidebar";
-import HeaderRightProfile from "../componets/owner";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+//? use this one to redirect wihtout my image!!
+// import { redirect } from "next/navigation";
+//redicrect('/admin-dashboard');
 export default function Home() {
-  const [content, setContent] = useState<React.ReactNode>(<Admin />);
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/admin-dashboard");
+  }, [router]);
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar
-        onMenuItemClick={(content: React.ReactNode) => setContent(content)}
+    <div className="text-center flex flex-col justify-center  items-center p-6 min-h-screen font-bold text-2xl">
+      Redirecting...
+    <div >
+      <Image
+      src='/profile.png'
+      width={100}
+      height={100}
+      alt="Redirecting Image"
+      className="mx-auto rounded-full items-center mb-4"
       />
-      <main className="flex-1 bg-[#e6f0fa] p">
-          <HeaderRightProfile />
-        {/* Header with owner profile */}
-        <div className="flex justify-end mb-4">
-        </div>
-
-        {/* Page content */}
-        <div className="p-6 rounded-xl shadow">{content}</div>
-      </main>
+    </div>
     </div>
   );
 }
