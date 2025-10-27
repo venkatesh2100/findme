@@ -5,7 +5,6 @@ export default function AdminInfoForm() {
     <div>
       <h2 className="font-semibold text-sm mb-6">Admin Information</h2>
       <form className="max-w-lg space-y-5">
-        {/* First and Last Name */}
         <div>
           <label className="block text-xs mb-1 font-semibold">
             Enter First and Last Name
@@ -16,8 +15,6 @@ export default function AdminInfoForm() {
             className="w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0]"
           />
         </div>
-
-        {/* Email */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Email Address</label>
           <input
@@ -27,7 +24,6 @@ export default function AdminInfoForm() {
           />
         </div>
 
-        {/* Phone */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Phone Number</label>
           <input
@@ -37,7 +33,6 @@ export default function AdminInfoForm() {
           />
         </div>
 
-        {/* Office Address */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Office Address</label>
           <textarea
@@ -47,7 +42,6 @@ export default function AdminInfoForm() {
           ></textarea>
         </div>
 
-        {/* Role */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Role</label>
           <input
@@ -57,7 +51,6 @@ export default function AdminInfoForm() {
           />
         </div>
 
-        {/* Username */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Username</label>
           <input
@@ -67,7 +60,6 @@ export default function AdminInfoForm() {
           />
         </div>
 
-        {/* Password */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Password</label>
           <input
@@ -80,7 +72,6 @@ export default function AdminInfoForm() {
           </p>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-between items-center mt-8 ">
           <button
             type="button"

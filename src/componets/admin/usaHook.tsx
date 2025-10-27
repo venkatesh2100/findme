@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react"; // Optional: install lucide-react
+import { ChevronLeft, ChevronRight } from "lucide-react"; 
 
 const stateSessions = [
   { state: "NY", value: 10 },

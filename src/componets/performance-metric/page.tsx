@@ -15,7 +15,6 @@ import {
 } from "recharts";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
-// Color palette lifted to visually match screenshots
 const COLORS = {
   pageBg: "#f5f8fd",
   // cardBg: "#eaf0fa",
@@ -33,7 +32,6 @@ const COLORS = {
 };
 
 export default function PerformanceMetricPage() {
-  // 7‑day sparkline data
   const trendData = [
     { name: "Day 1", value: 30 },
     { name: "Day 2", value: 40 },
@@ -73,7 +71,7 @@ export default function PerformanceMetricPage() {
     { name: "South Korea", value: 82 },
   ];
 
-  // Server Usage – State (subset to match screenshot row)
+
   const stateData = [
     { name: "AL", value: 42 },
     { name: "AK", value: 28 },

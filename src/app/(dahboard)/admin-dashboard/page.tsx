@@ -1,8 +1,8 @@
 'use client'
 import { useState } from "react";
 import  RocketCard  from "@/componets/admin/rocketcard";
-import Overview from "@/componets/admin/overview"; // Make sure this path is correct
-import TrafficDashboard from "@/componets/admin/trafficDashboard"; // Make sure this path is correct
+import Overview from "@/componets/admin/overview";
+import TrafficDashboard from "@/componets/admin/trafficDashboard"; 
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("overview");

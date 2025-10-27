@@ -5,7 +5,6 @@ export default function TeamInfoForm() {
     <div>
       <h2 className="font-semibold text-sm mb-6">Team Information</h2>
       <form className="max-w-lg space-y-5">
-        {/* First and Last Name */}
         <div>
           <label className="block text-xs mb-1 font-semibold">
             Enter First and Last Name
@@ -17,7 +16,6 @@ export default function TeamInfoForm() {
           />
         </div>
 
-        {/* Email */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Email Address</label>
           <input
@@ -27,7 +25,6 @@ export default function TeamInfoForm() {
           />
         </div>
 
-        {/* Phone */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Phone Number</label>
           <input
@@ -37,7 +34,6 @@ export default function TeamInfoForm() {
           />
         </div>
 
-        {/* Office Address */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Office Address</label>
           <textarea
@@ -47,7 +43,6 @@ export default function TeamInfoForm() {
           ></textarea>
         </div>
 
-        {/* Role */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Role</label>
           <input
@@ -57,7 +52,6 @@ export default function TeamInfoForm() {
           />
         </div>
 
-        {/* Username */}
         <div>
           <label className="block text-xs mb-1 font-semibold">Username</label>
           <input
@@ -67,7 +61,7 @@ export default function TeamInfoForm() {
           />
         </div>
 
-        {/* Password */}
+
         <div>
           <label className="block text-xs mb-1 font-semibold">Password</label>
           <input
@@ -80,7 +74,7 @@ export default function TeamInfoForm() {
           </p>
         </div>
 
-        {/* Buttons */}
+
         <div className="flex justify-between items-center mt-8 ">
           <button
             type="button"

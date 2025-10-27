@@ -20,7 +20,7 @@ export default function UserDataFilters() {
 
         {/* Select Time Period */}
         <div className="flex flex-col text-sm text-black">
-          <label className="mb-1 font-normal text-left">Select Time Period</label> {/* Ensure label is left-aligned */}
+          <label className="mb-1 font-normal text-left">Select Time Period</label> 
           <div className="relative">
             <input
               type="date"

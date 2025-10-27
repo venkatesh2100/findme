@@ -162,8 +162,8 @@ const CustomMemberTable = () => {
     className="overflow-x-auto overflow-y-auto"
     style={{
       maxWidth:"1100px",
-      maxHeight: "500x", // vertical scroll trigger
-      whiteSpace: "nowrap", // key for horizontal scroll with no wrap
+      maxHeight: "500x",
+      whiteSpace: "nowrap", 
     }}
   >
     <table className="text-sm min-w-max">

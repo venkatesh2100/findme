@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function RocketCard() {
   const [users, setUsers] = useState(1);
 
-  // Load stored value
+
   useEffect(() => {
     const savedUsers = localStorage.getItem("usersCount");
     if (savedUsers) {

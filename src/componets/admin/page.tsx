@@ -1,7 +1,7 @@
 import { useState } from "react";
 import  RocketCard  from "./rocketcard";
-import Overview from "./overview"; // Make sure this path is correct
-import TrafficDashboard from "./trafficDashboard"; // Make sure this path is correct
+import Overview from "./overview";
+import TrafficDashboard from "./trafficDashboard"; 
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("overview");

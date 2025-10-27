@@ -175,7 +175,7 @@ const TrafficDashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Returning vs New */}
+
         <div className="bg-white flex-1 p-4 rounded-xl shadow-sm space-y-4">
           <div className="text-sm font-semibold">New vs Returning Visitors</div>
           <ul className="space-y-1 text-xs">
