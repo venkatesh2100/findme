@@ -32,7 +32,8 @@ export default function FeedbackPage() {
           >
             Suppport Ticket
           </button>
-          <button
+          {/* No need of Response Tracker for Now */}
+          {/* <button
             onClick={() => setActiveTab("response")}
             className={`pb-1 ${
               activeTab === "response"
@@ -41,13 +42,13 @@ export default function FeedbackPage() {
             }`}
           >
             Response Tracker
-          </button>
+          </button> */}
         </div>
       </nav>
 
       {activeTab === "userFeedback" && <UserFeeback />}
-      {activeTab === "support" && <SupportTicket/>}
-      {activeTab === "response" && <SupportTicket/>}
+      {activeTab === "support" && <SupportTicket />}
+      {activeTab === "response" && <SupportTicket />}
     </div>
   );
 }

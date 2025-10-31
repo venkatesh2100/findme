@@ -2,10 +2,28 @@
 import { Maximize2, Minimize2, Filter } from "lucide-react";
 import { useState } from "react";
 import AllTicket from "./supportTicket/allTicket";
+interface Ticket {
+  id: string;
+  name: string;
+  submission: string;
+  view: string;
+  assigned: string;
+  close: string;
+  time: string;
+  status: string;
+}
 export default function SupportTicket() {
   const [activeTab, setActiveTab] = useState("all");
   const [isMaximized, setIsMaximized] = useState(false);
-
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [ticketStatus, setTicketStatus] = useState("");
+  const [ticketAssinged, setTicketAssinged] = useState("");
+  const [ticketComment, setTicketComment] = useState("");
+  const handleTicketSelect = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setTicketAssinged(ticket.assigned);
+    setTicketStatus(ticket.status);
+  };
   return (
     <div>
       <div className="bg-white shadow-md rounded-2xl p-2">
@@ -51,21 +69,40 @@ export default function SupportTicket() {
                 className="flex items-center gap-1 mr-2 bg-black text-white text-xs px-3 py-1 rounded-full shadow-sm hover:bg-gray-800 transition"
               >
                 <span>{isMaximized ? "Minimize" : "Expand"}</span>
-                {isMaximized ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+                {isMaximized ? (
+                  <Minimize2 size={14} />
+                ) : (
+                  <Maximize2 size={14} />
+                )}
               </button>
               <button className="bg-black text-white p-2 rounded-full shadow-sm hover:bg-gray-800 transition">
                 <Filter size={14} />
               </button>
             </div>
           </div>
-          {activeTab === "all" && <AllTicket isMaximized={isMaximized} />}
-          {activeTab === "new" && <AllTicket isMaximized={isMaximized} />}
-          {activeTab === "past" && <AllTicket isMaximized={isMaximized} />}
+          {activeTab === "all" && (
+            <AllTicket
+              isMaximized={isMaximized}
+              onTicketSlect={handleTicketSelect}
+            />
+          )}
+          {activeTab === "new" && (
+            <AllTicket
+              isMaximized={isMaximized}
+              onTicketSlect={handleTicketSelect}
+            />
+          )}
+          {activeTab === "past" && (
+            <AllTicket
+              isMaximized={isMaximized}
+              onTicketSlect={handleTicketSelect}
+            />
+          )}
         </div>
       </div>
 
       {/* Bottom Detail Section - Hidden when maximized */}
-      {!isMaximized && (
+      {!isMaximized && selectedTicket && (
         <>
           <div className="mt-6 bg-white shadow-md rounded-2xl p-2">
             <div className="p-6">
@@ -74,63 +111,78 @@ export default function SupportTicket() {
               </h2>
 
               <div className="space-y-4 text-gray-500 text-md">
-                <p>
+                <div>
                   <span className="font-medium mr-1">User Name:</span>
-                  {"  Jhon Smith"}
-                </p>
-                <p>
+                  {selectedTicket.name}
+                </div>
+                <div>
                   <span className="font-medium mr-1">Ticket ID:</span>
-                  {"#2222 "}
-                </p>
-                <p>
+                  {selectedTicket.id}
+                </div>
+                <div>
                   <span className="font-medium mr-1">Date Submission:</span>
-                  {"30/10/2025  and 11.00 PM "}
-                </p>
-                <p>
-                  <span className="font-medium">Close Date:</span>{" "}
-                </p>
-                <p>
+                  {selectedTicket.submission}
+                </div>
+                <div>
+                  <span className="font-medium">Close Date:</span>
+                  {selectedTicket.close}
+                </div>
+                <div>
                   <span className="font-medium">Status:</span>
-                  <select className="ml-2 border border-gray-300 rounded-md px-2 py-1">
+                  <select
+                    value={ticketStatus}
+                    onChange={(e) => setTicketStatus(e.target.value)}
+                    className="ml-2 border border-gray-300 rounded-md px-2 py-1"
+                  >
                     <option>Open</option>
                     <option>Closed</option>
-                    <option>In Progress</option>
+                    <option>New</option>
                   </select>
-                </p>
+                </div>
 
-                <p>
+                <div>
                   <span className="font-medium">File and Attachment:</span>{" "}
-                </p>
-                <p>
+                </div>
+                <div>
                   <span className="font-medium">Assinged To:</span>
-                  <select className="ml-2 border border-gray-300 rounded-md px-2 py-1">
-                    <option>Open</option>
-                    <option>Closed</option>
-                    <option>In Progress</option>
+                  <select
+                    value={ticketAssinged}
+                    onChange={(e) => setTicketAssinged(e.target.value)}
+                    className="ml-2 border border-gray-300 rounded-md px-2 py-1"
+                  >
+                    <option>Sam</option>
+                    <option>Dylan</option>
+                    <option>Sheema</option>
                   </select>
-                </p>
-                <p className="flex items-start gap-4 w-full">
+                </div>
+                <div className="flex items-start gap-4 w-full">
                   <label className="font-medium text-gray-700 mt-2">
                     Comment
                   </label>
 
-                  <p className="flex-1 flex flex-col">
-                    <textarea className="w-200 border border-gray-300 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none h-20"></textarea>
+                  <div className="flex-1 flex flex-col">
+                    <textarea
+                      value={ticketComment}
+                      onChange={(e) => setTicketComment(e.target.value)}
+                      className="w-200 border border-gray-300 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none h-20"
+                    ></textarea>
 
-                    <p className="flex ml-180 mt-2">
+                    <div className="flex ml-180 mt-2">
                       <button className="px-4 py-1 border rounded-md text-sm hover:bg-gray-200 transition">
                         Send
                       </button>
-                    </p>
-                  </p>
-                </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="flex gap-4 mt-16 justify-end">
                 <button className="bg-[#1A4BB5] hover:bg-[#153d91] text-white px-6 py-2 rounded-lg shadow-sm font-medium transition">
                   Solve
                 </button>
-                <button className="bg-[#EAF2FA] hover:bg-[#d6e6f8] text-[#1A4BB5] px-6 py-2 rounded-lg shadow-sm font-medium transition">
+                <button
+                onClick={() => setSelectedTicket(null)}
+                className="bg-[#EAF2FA] hover:bg-[#d6e6f8] text-[#1A4BB5] px-6 py-2 rounded-lg shadow-sm font-medium transition">
                   Close
                 </button>
                 <button className="border border-gray-400 hover:bg-gray-100 px-6 py-2 rounded-lg shadow-sm text-gray-700 font-medium transition">

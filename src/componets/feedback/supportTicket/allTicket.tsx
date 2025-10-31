@@ -1,5 +1,20 @@
-
-export default function AllTicket({ isMaximized}: { isMaximized: boolean }) {
+interface Ticket {
+  id: string;
+  name: string;
+  submission: string;
+  view: string;
+  assigned: string;
+  close: string;
+  time: string;
+  status: string;
+}
+export default function AllTicket({
+  isMaximized,
+  onTicketSlect,
+}: {
+  isMaximized: boolean;
+  onTicketSlect: (ticket: Ticket) => void;
+}) {
   const tickets = [
     {
       id: "#2222",
@@ -29,7 +44,7 @@ export default function AllTicket({ isMaximized}: { isMaximized: boolean }) {
       assigned: "Sam",
       close: "5/11/24",
       time: "60 hr",
-      status: "Closed",
+      status: "New",
     },
     {
       id: "#5555",
@@ -69,7 +84,7 @@ export default function AllTicket({ isMaximized}: { isMaximized: boolean }) {
       assigned: "Emma",
       close: "-",
       time: "0 min",
-      status: "Open",
+      status: "New",
     },
     {
       id: "#9999",
@@ -100,6 +115,7 @@ export default function AllTicket({ isMaximized}: { isMaximized: boolean }) {
       close: "7/7/25",
       time: "48 hr",
       status: "Closed",
+      
     },
   ];
 
@@ -124,6 +140,7 @@ export default function AllTicket({ isMaximized}: { isMaximized: boolean }) {
           {displayTickets.map((ticket, index) => (
             <tr
               key={ticket.id}
+              onClick={() => onTicketSlect(ticket)}
               className={`transition-colors duration-150 ${
                 index % 2 === 0 ? "bg-white" : "bg-gray-50"
               } hover:bg-gray-100`}
