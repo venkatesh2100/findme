@@ -1,22 +1,196 @@
-"use client";
 import { Maximize2, Minimize2, Filter } from "lucide-react";
-import { useState } from "react";
+import TicketFilter from "./supportTicket/ticketFilter";
+import { useState, useMemo } from "react";
 import AllTicket from "./supportTicket/allTicket";
+interface Ticket {
+  id: string;
+  name: string;
+  submission: string;
+  view: string;
+  assigned: string;
+  close: string;
+  time: string;
+  status: string;
+}
+
+interface Filters {
+  userName: string;
+  ticketID: string;
+  status: string[];
+}
+
 export default function SupportTicket() {
+  const allTickets: Ticket[] = [
+    {
+      id: "#2222",
+      name: "John Smith",
+      submission: "1/2/24",
+      view: "Read",
+      assigned: "Sam",
+      close: "2/2/24",
+      time: "60 hr",
+      status: "Closed",
+    },
+    {
+      id: "#3333",
+      name: "Jolie Hoskins",
+      submission: "2/3/25",
+      view: "Unread",
+      assigned: "Sam",
+      close: "-",
+      time: "0 min",
+      status: "Open",
+    },
+    {
+      id: "#4444",
+      name: "Pennington Joy",
+      submission: "4/11/24",
+      view: "Read",
+      assigned: "Sam",
+      close: "5/11/24",
+      time: "60 hr",
+      status: "New",
+    },
+    {
+      id: "#5555",
+      name: "Millie Marsden",
+      submission: "5/10/25",
+      view: "Unread",
+      assigned: "Sam",
+      close: "-",
+      time: "0 min",
+      status: "Open",
+    },
+    {
+      id: "#6666",
+      name: "John Smith",
+      submission: "10/2/25",
+      view: "Unread",
+      assigned: "Sam",
+      close: "-",
+      time: "0 min",
+      status: "Open",
+    },
+    {
+      id: "#7777",
+      name: "Sarah Connor",
+      submission: "15/3/25",
+      view: "Read",
+      assigned: "John",
+      close: "16/3/25",
+      time: "24 hr",
+      status: "Closed",
+    },
+    {
+      id: "#8888",
+      name: "Mike Johnson",
+      submission: "20/4/25",
+      view: "Unread",
+      assigned: "Emma",
+      close: "-",
+      time: "0 min",
+      status: "New",
+    },
+    {
+      id: "#9999",
+      name: "Lisa Anderson",
+      submission: "25/5/25",
+      view: "Read",
+      assigned: "Sam",
+      close: "26/5/25",
+      time: "12 hr",
+      status: "Closed",
+    },
+    {
+      id: "#1010",
+      name: "David Brown",
+      submission: "1/6/25",
+      view: "Unread",
+      assigned: "John",
+      close: "-",
+      time: "0 min",
+      status: "Open",
+    },
+    {
+      id: "#1111",
+      name: "Emma Wilson",
+      submission: "5/7/25",
+      view: "Read",
+      assigned: "Emma",
+      close: "7/7/25",
+      time: "48 hr",
+      status: "Closed",
+    },
+  ];
+
   const [activeTab, setActiveTab] = useState("all");
   const [isMaximized, setIsMaximized] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [ticketStatus, setTicketStatus] = useState("");
+  const [ticketAssigned, setTicketAssigned] = useState("");
+  const [ticketComment, setTicketComment] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const [filters, setFilters] = useState<Filters>({
+    userName: "",
+    ticketID: "",
+    status: [],
+  });
+
+  const [appliedFilters, setAppliedFilters] = useState<Filters>({
+    userName: "",
+    ticketID: "",
+    status: [],
+  });
+
+  const handleTicketSelect = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setTicketAssigned(ticket.assigned);
+    setTicketStatus(ticket.status);
+  };
+
+  const handleApplyFilters = () => {
+    setAppliedFilters({ ...filters });
+  };
+
+  const handleClearFilters = () => {
+    const emptyFilters = { userName: "", ticketID: "", status: [] };
+    setFilters(emptyFilters);
+    setAppliedFilters(emptyFilters);
+  };
+
+  const filteredTickets = useMemo(() => {
+    return allTickets.filter((ticket) => {
+      const matchesUserName =
+        !appliedFilters.userName ||
+        ticket.name
+          .toLowerCase()
+          .includes(appliedFilters.userName.toLowerCase());
+
+      const matchesTicketID =
+        !appliedFilters.ticketID ||
+        ticket.id.toLowerCase().includes(appliedFilters.ticketID.toLowerCase());
+
+      const matchesStatus =
+        appliedFilters.status.length === 0 ||
+        appliedFilters.status.includes(ticket.status);
+
+      return matchesUserName && matchesTicketID && matchesStatus;
+    });
+  }, [appliedFilters, allTickets]);
 
   return (
-    <div>
+    <div className="min-h-screen ">
       <div className="bg-white shadow-md rounded-2xl p-2">
-        <div className="p-4 items-center">
-          <h2 className="font-semibold text-gray-800">List of User Ticket</h2>
-
-          <div className="flex gap-2 justify-between">
-            <div className="flex gap-2 text-sm mt-1 pb-2">
+        <div className="p-4">
+          <h2 className="font-semibold text-gray-800 mb-4">
+            List of User Ticket
+          </h2>
+          <div className="flex gap-2 justify-between items-center mb-4">
+            <div className="flex gap-8 text-sm">
               <button
                 onClick={() => setActiveTab("all")}
-                className={`pb-1 mr-10 ${
+                className={`pb-2 ${
                   activeTab === "all"
                     ? "text-[#2f5dd6] font-semibold border-b-2 border-[#2f5dd6]"
                     : "text-gray-600 hover:text-gray-900"
@@ -26,7 +200,7 @@ export default function SupportTicket() {
               </button>
               <button
                 onClick={() => setActiveTab("new")}
-                className={`pb-1 ml-10 mr-2 ${
+                className={`pb-2 ${
                   activeTab === "new"
                     ? "text-[#2f5dd6] font-semibold border-b-2 border-[#2f5dd6]"
                     : "text-gray-600 hover:text-gray-900"
@@ -36,7 +210,7 @@ export default function SupportTicket() {
               </button>
               <button
                 onClick={() => setActiveTab("past")}
-                className={`pb-1 ${
+                className={`pb-2 ${
                   activeTab === "past"
                     ? "text-[#2f5dd6] font-semibold border-b-2 border-[#2f5dd6]"
                     : "text-gray-600 hover:text-gray-900"
@@ -45,92 +219,121 @@ export default function SupportTicket() {
                 Past Ticket History
               </button>
             </div>
-            <div className="flex">
+            <div className="flex gap-2">
               <button
                 onClick={() => setIsMaximized(!isMaximized)}
-                className="flex items-center gap-1 mr-2 bg-black text-white text-xs px-3 py-1 rounded-full shadow-sm hover:bg-gray-800 transition"
+                className="flex items-center gap-1 bg-black text-white text-xs px-3 py-1.5 rounded-full shadow-sm hover:bg-gray-800 transition"
               >
                 <span>{isMaximized ? "Minimize" : "Expand"}</span>
-                {isMaximized ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+                {isMaximized ? (
+                  <Minimize2 size={14} />
+                ) : (
+                  <Maximize2 size={14} />
+                )}
               </button>
-              <button className="bg-black text-white p-2 rounded-full shadow-sm hover:bg-gray-800 transition">
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className="bg-black text-white p-2 rounded-full shadow-sm hover:bg-gray-800 transition"
+              >
                 <Filter size={14} />
               </button>
             </div>
           </div>
-          {activeTab === "all" && <AllTicket isMaximized={isMaximized} />}
-          {activeTab === "new" && <AllTicket isMaximized={isMaximized} />}
-          {activeTab === "past" && <AllTicket isMaximized={isMaximized} />}
+
+          {isFilterOpen && (
+            <TicketFilter
+              filters={filters}
+              onFilterChange={setFilters}
+              onApply={handleApplyFilters}
+              onClear={handleClearFilters}
+            />
+          )}
+
+          <AllTicket
+            isMaximized={isMaximized}
+            onTicketSelect={handleTicketSelect}
+            tickets={filteredTickets}
+          />
         </div>
       </div>
 
-      {/* Bottom Detail Section - Hidden when maximized */}
-      {!isMaximized && (
+      {!isMaximized && selectedTicket && (
         <>
           <div className="mt-6 bg-white shadow-md rounded-2xl p-2">
             <div className="p-6">
               <h2 className="font-semibold text-gray-800 mb-6 text-lg">
                 Over View of Issue from User
               </h2>
-
               <div className="space-y-4 text-gray-500 text-md">
-                <p>
+                <div>
                   <span className="font-medium mr-1">User Name:</span>
-                  {"  Jhon Smith"}
-                </p>
-                <p>
+                  {selectedTicket.name}
+                </div>
+                <div>
                   <span className="font-medium mr-1">Ticket ID:</span>
-                  {"#2222 "}
-                </p>
-                <p>
+                  {selectedTicket.id}
+                </div>
+                <div>
                   <span className="font-medium mr-1">Date Submission:</span>
-                  {"30/10/2025  and 11.00 PM "}
-                </p>
-                <p>
+                  {selectedTicket.submission}
+                </div>
+                <div>
                   <span className="font-medium">Close Date:</span>{" "}
-                </p>
-                <p>
+                  {selectedTicket.close}
+                </div>
+                <div>
                   <span className="font-medium">Status:</span>
-                  <select className="ml-2 border border-gray-300 rounded-md px-2 py-1">
+                  <select
+                    value={ticketStatus}
+                    onChange={(e) => setTicketStatus(e.target.value)}
+                    className="ml-2 border border-gray-300 rounded-md px-2 py-1"
+                  >
                     <option>Open</option>
                     <option>Closed</option>
-                    <option>In Progress</option>
+                    <option>New</option>
                   </select>
-                </p>
-
-                <p>
-                  <span className="font-medium">File and Attachment:</span>{" "}
-                </p>
-                <p>
-                  <span className="font-medium">Assinged To:</span>
-                  <select className="ml-2 border border-gray-300 rounded-md px-2 py-1">
-                    <option>Open</option>
-                    <option>Closed</option>
-                    <option>In Progress</option>
+                </div>
+                <div>
+                  <span className="font-medium">File and Attachment:</span>
+                </div>
+                <div>
+                  <span className="font-medium">Assigned To:</span>
+                  <select
+                    value={ticketAssigned}
+                    onChange={(e) => setTicketAssigned(e.target.value)}
+                    className="ml-2 border border-gray-300 rounded-md px-2 py-1"
+                  >
+                    <option>Sam</option>
+                    <option>Dylan</option>
+                    <option>Sheema</option>
                   </select>
-                </p>
-                <p className="flex items-start gap-4 w-full">
+                </div>
+                <div className="flex items-start gap-4 w-full">
                   <label className="font-medium text-gray-700 mt-2">
                     Comment
                   </label>
-
-                  <p className="flex-1 flex flex-col">
-                    <textarea className="w-200 border border-gray-300 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none h-20"></textarea>
-
-                    <p className="flex ml-180 mt-2">
+                  <div className="flex-1 flex flex-col">
+                    <textarea
+                      value={ticketComment}
+                      onChange={(e) => setTicketComment(e.target.value)}
+                      className="w-full border border-gray-300 bg-gray-100 rounded-md px-3 py-2 text-sm outline-none resize-none h-20"
+                    ></textarea>
+                    <div className="flex justify-end mt-2">
                       <button className="px-4 py-1 border rounded-md text-sm hover:bg-gray-200 transition">
                         Send
                       </button>
-                    </p>
-                  </p>
-                </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-
               <div className="flex gap-4 mt-16 justify-end">
                 <button className="bg-[#1A4BB5] hover:bg-[#153d91] text-white px-6 py-2 rounded-lg shadow-sm font-medium transition">
                   Solve
                 </button>
-                <button className="bg-[#EAF2FA] hover:bg-[#d6e6f8] text-[#1A4BB5] px-6 py-2 rounded-lg shadow-sm font-medium transition">
+                <button
+                  onClick={() => setSelectedTicket(null)}
+                  className="bg-[#EAF2FA] hover:bg-[#d6e6f8] text-[#1A4BB5] px-6 py-2 rounded-lg shadow-sm font-medium transition"
+                >
                   Close
                 </button>
                 <button className="border border-gray-400 hover:bg-gray-100 px-6 py-2 rounded-lg shadow-sm text-gray-700 font-medium transition">
@@ -139,9 +342,10 @@ export default function SupportTicket() {
               </div>
             </div>
           </div>
-
           <div className="mt-4 text-right text-[#2E6FF2] text-sm font-medium">
-            <a href="#">Next Support Ticket Page →</a>
+            <a href="#" className="hover:underline">
+              Next Support Ticket Page →
+            </a>
           </div>
         </>
       )}
