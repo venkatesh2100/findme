@@ -1,16 +1,34 @@
 import { Minimize2, Maximize2, Filter } from "lucide-react";
-import { useState } from "react";
+import FeedbackFilter from "./feedback/feebackFilter";
+import AllFeebacks from "./feedback/allFeeback";
+import { useState, useMemo } from "react";
+interface Feedback {
+  id: number;
+  name: string;
+  avatar: string;
+  platform: string;
+  comment: string;
+  isRead: boolean;
+  dateSubmission: string;
+  solved: boolean;
+  closeDate: string;
+}
+
+interface Filters {
+  userName: string;
+  platform: string[];
+  commet: string[];
+  status: string[];
+}
 
 export default function UserFeedback() {
-  const [isMaximized, setIsMaximized] = useState(false);
-
-  const feedbacks = [
+  const feedbacks: Feedback[] = [
     {
       id: 1,
       name: "John Smith",
       avatar: "https://i.pravatar.cc/40?img=1",
       platform: "Web",
-      comment: "Read",
+      comment: "Hi I'm Venky",
       isRead: true,
       dateSubmission: "1/2/24",
       solved: true,
@@ -21,7 +39,7 @@ export default function UserFeedback() {
       name: "Jolie Hoskins",
       avatar: "https://i.pravatar.cc/40?img=2",
       platform: "Web",
-      comment: "Unread",
+      comment: "Hi I'm Venky",
       isRead: false,
       dateSubmission: "2/3/25",
       solved: false,
@@ -32,7 +50,7 @@ export default function UserFeedback() {
       name: "Pennington Joy",
       avatar: "https://i.pravatar.cc/40?img=3",
       platform: "App",
-      comment: "Unread",
+      comment: "Hi I'm Venky",
       isRead: false,
       dateSubmission: "4/11/24",
       solved: true,
@@ -43,7 +61,7 @@ export default function UserFeedback() {
       name: "Millie Marsden",
       avatar: "https://i.pravatar.cc/40?img=4",
       platform: "Web",
-      comment: "Unread",
+      comment: "Hi I'm Venky",
       isRead: false,
       dateSubmission: "5/10/25",
       solved: false,
@@ -54,7 +72,7 @@ export default function UserFeedback() {
       name: "John Smith",
       avatar: "https://i.pravatar.cc/40?img=5",
       platform: "App",
-      comment: "Read",
+      comment: "Hi I'm Venky",
       isRead: true,
       dateSubmission: "10/2/25",
       solved: false,
@@ -65,7 +83,7 @@ export default function UserFeedback() {
       name: "Sarah Connor",
       avatar: "https://i.pravatar.cc/40?img=6",
       platform: "Web",
-      comment: "Unread",
+      comment: "Hi I'm Venky",
       isRead: false,
       dateSubmission: "15/3/25",
       solved: true,
@@ -76,7 +94,7 @@ export default function UserFeedback() {
       name: "Mike Johnson",
       avatar: "https://i.pravatar.cc/40?img=7",
       platform: "App",
-      comment: "Read",
+      comment: "Hi I'm Venky",
       isRead: true,
       dateSubmission: "20/4/25",
       solved: false,
@@ -87,7 +105,7 @@ export default function UserFeedback() {
       name: "Lisa Anderson",
       avatar: "https://i.pravatar.cc/40?img=8",
       platform: "Web",
-      comment: "Unread",
+      comment: "Hi I'm Venky",
       isRead: false,
       dateSubmission: "25/5/25",
       solved: true,
@@ -98,7 +116,7 @@ export default function UserFeedback() {
       name: "David Brown",
       avatar: "https://i.pravatar.cc/40?img=9",
       platform: "App",
-      comment: "Read",
+      comment: "Hi I'm Venky",
       isRead: true,
       dateSubmission: "1/6/25",
       solved: false,
@@ -109,7 +127,7 @@ export default function UserFeedback() {
       name: "Emma Wilson",
       avatar: "https://i.pravatar.cc/40?img=10",
       platform: "Web",
-      comment: "Unread",
+      comment: "Hi I'm Venky",
       isRead: false,
       dateSubmission: "5/7/25",
       solved: true,
@@ -117,12 +135,72 @@ export default function UserFeedback() {
     },
   ];
 
-  const displayFeedbacks = isMaximized ? feedbacks : feedbacks.slice(0, 5);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<Feedback | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<Filters>({
+    userName: "",
+    platform: [],
+    commet: [],
+    status: [],
+  });
+
+  const [appliedFilters, setAppliedFilters] = useState<Filters>({
+    userName: "",
+    platform: [],
+    commet: [],
+    status: [],
+  });
+
+  const handleTicketSelect = (Ticket: Feedback) => {
+    setSelectedTicket(Ticket);
+  };
+
+  const handleApplyFilters = () => {
+    setAppliedFilters({ ...filters });
+  };
+
+  const handleClearFilters = () => {
+    const emptyFilters: Filters = {
+      userName: "",
+      platform: [],
+      commet: [],
+      status: [],
+    };
+    setFilters(emptyFilters);
+    setAppliedFilters(emptyFilters);
+  };
+
+  const filteredTickets = useMemo(() => {
+    return feedbacks.filter((ticket) => {
+      const matchesUserName =
+        appliedFilters.userName === "" ||
+        ticket.name
+          .toLowerCase()
+          .includes(appliedFilters.userName.toLowerCase());
+      const matchesPlatform =
+        appliedFilters.platform.length === 0 ||
+        appliedFilters.platform.includes(ticket.platform);
+      const matchesComment =
+        appliedFilters.commet.length === 0 ||
+        appliedFilters.commet.includes("Read")  ||
+        appliedFilters.commet.includes("Unread");
+      const matchesStatus =
+        appliedFilters.status.length === 0 ||
+        (appliedFilters.status.includes("Solved") && ticket.solved) ||
+        (appliedFilters.status.includes("Unsolved") && !ticket.solved);
+
+      return (
+        matchesUserName && matchesPlatform && matchesComment && matchesStatus
+      );
+    });
+  }, [appliedFilters, feedbacks]);
+
 
   return (
     <div>
       <div className="bg-white shadow-md rounded-2xl overflow-hidden p-2">
-        <div className="p-4 flex justify-between items-center">
+        <div className="p-4 flex   justify-between items-center">
           <h2 className="font-semibold text-gray-800">List of User Ticket</h2>
           <div className="flex gap-2">
             <button
@@ -132,53 +210,30 @@ export default function UserFeedback() {
               <span>{isMaximized ? "Minimize" : "Expand"}</span>
               {isMaximized ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
             </button>
-            <button className="bg-black text-white p-2 rounded-full shadow-sm hover:bg-gray-800 transition">
+            <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="bg-black text-white p-2 rounded-full shadow-sm hover:bg-gray-800 transition"
+            >
               <Filter size={14} />
             </button>
           </div>
         </div>
+        {isFilterOpen && (
+          <FeedbackFilter
+            filters={filters}
+            onFilterChange={setFilters}
+            onApply={handleApplyFilters}
+            onClear={handleClearFilters}
+          />
+        )}
+           <AllFeebacks
+            isMaximized={isMaximized}
+            onTicketSelect={handleTicketSelect}
+            tickets={filteredTickets}
+          />
 
-        <div className="overflow-x-auto p-2">
-          <table className="w-full text-sm">
-            <thead className="bg-[#F9FAFB] text-gray-600">
-              <tr>
-                <th className="p-3 text-left font-medium">UserName</th>
-                <th className="p-3 text-left font-medium">Platform</th>
-                <th className="p-3 text-left font-medium">Comment</th>
-                <th className="p-3 text-left font-medium">Date Submission</th>
-                <th className="p-3 text-left font-medium">Solved</th>
-                <th className="p-3 text-left font-medium">Close Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {displayFeedbacks.map((feedback) => (
-                <tr key={feedback.id} className="hover:bg-gray-50">
-                  <td className="p-3 flex items-center gap-2">
-                    <img
-                      src={feedback.avatar}
-                      alt=""
-                      className="w-6 h-6 rounded-full"
-                    />
-                    {feedback.name}
-                  </td>
-                  <td className="p-3">{feedback.platform}</td>
-                  <td
-                    className={`p-3 text-[#2E6FF2] cursor-pointer ${
-                      !feedback.isRead ? "font-semibold" : ""
-                    }`}
-                  >
-                    {feedback.comment}
-                  </td>
-                  <td className="p-3">{feedback.dateSubmission}</td>
-                  <td className="p-3">{feedback.solved ? "✔" : ""}</td>
-                  <td className="p-3">{feedback.closeDate}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+
       </div>
-
 
       {!isMaximized && (
         <>
