@@ -9,8 +9,7 @@ interface Feedback {
   solved: boolean;
   closeDate: string;
 }
-
-export default function AllFeebacks({
+export default function AllFeedbacks({
   isMaximized,
   onTicketSelect,
   tickets,
@@ -23,7 +22,7 @@ export default function AllFeebacks({
 
   return (
     <div className="overflow-x-auto mt-4 rounded-xl border border-gray-100 shadow-sm">
-      <div className="overflow-x-auto  mt-2 p-2">
+      <div className="overflow-x-auto mt-2 p-2">
         <table className="w-full text-sm">
           <thead className="bg-[#F9FAFB] text-gray-600">
             <tr>
@@ -39,8 +38,10 @@ export default function AllFeebacks({
             {displayFeedbacks.length > 0 ? (
               displayFeedbacks.map((feedback) => (
                 <tr
-                onClick={() => onTicketSelect(feedback)}
-                key={feedback.id} className="hover:bg-gray-50">
+                  onClick={() => onTicketSelect(feedback)}
+                  key={feedback.id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                >
                   <td className="p-3 flex items-center gap-2">
                     <img
                       src={feedback.avatar}
@@ -55,7 +56,7 @@ export default function AllFeebacks({
                       !feedback.isRead ? "font-semibold" : ""
                     }`}
                   >
-                    {!feedback.isRead ? ("Read") : ("Unread")}
+                    {feedback.isRead ? "Read" : "Unread"}
                   </td>
                   <td className="p-3">{feedback.dateSubmission}</td>
                   <td className="p-3">{feedback.solved ? "✔" : ""}</td>
@@ -64,7 +65,7 @@ export default function AllFeebacks({
               ))
             ) : (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                   No tickets found matching your filters
                 </td>
               </tr>

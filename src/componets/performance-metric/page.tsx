@@ -20,9 +20,9 @@ const COLORS = {
   // cardBg: "#eaf0fa",
   cardBg: "#ffffff",
   border: "#cfe0ff",
-  textDark: "#0f172a", // slate-900
-  text: "#1f2937", // gray-800
-  subText: "#6b7280", // gray-500
+  textDark: "#0f172a", 
+  text: "#1f2937",
+  subText: "#6b7280", //
   blueMid: "#1564CA",
   blue: "#A4DCFD",
   blueDeep: "#052471",
@@ -462,7 +462,12 @@ export default function PerformanceMetricPage() {
           Server Usage
         </h2>
 
-        {/* By Country */}
+        {/* By Country */} <div>
+                    <span className="font-medium">Status:</span>{" "}
+                    <span className={`${selectedTicket.solved ? 'text-green-600' : 'text-orange-600'} font-medium`}>
+                      {selectedTicket.solved ? "Solved" : "Unsolved"}
+                    </span>
+                 </div>
         <div
           className="rounded-2xl p-6 shadow border mb-6"
           style={{ backgroundColor: COLORS.cardBg, borderColor: COLORS.border }}

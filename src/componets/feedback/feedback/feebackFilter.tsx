@@ -1,7 +1,7 @@
 interface Filters {
   userName: string;
   platform: string[];
-  commet: string[];
+  comment: string[];
   status: string[];
 }
 export default function FeedbackFilter({
@@ -15,16 +15,29 @@ export default function FeedbackFilter({
   onApply: () => void;
   onClear: () => void;
 }) {
+  const handlePlatformChange = (platform: string, checked: boolean) => {
+    const newPlatform = checked
+      ? [...filters.platform, platform]
+      : filters.platform.filter((p) => p !== platform);
+    onFilterChange({ ...filters, platform: newPlatform });
+  };
+
+  const handleCommentChange = (comment: string, checked: boolean) => {
+    const newComment = checked
+      ? [...filters.comment, comment]
+      : filters.comment.filter((c) => c !== comment);
+    onFilterChange({ ...filters, comment: newComment });
+  };
+
   const handleStatusChange = (status: string, checked: boolean) => {
     const newStatus = checked
       ? [...filters.status, status]
       : filters.status.filter((s) => s !== status);
-
     onFilterChange({ ...filters, status: newStatus });
   };
 
   return (
-    <div className="md-2 px-4 border-b border-gray-200">
+    <div className="px-4 pb-4 border-b border-gray-200">
       <div className="font-semibold text-gray-800 mb-4">Filter</div>
       <div className="flex justify-between items-end">
         <div className="flex gap-6">
@@ -50,8 +63,10 @@ export default function FeedbackFilter({
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={filters.status.includes("Web")}
-                  onChange={(e) => handleStatusChange("Web", e.target.checked)}
+                  checked={filters.platform.includes("Web")}
+                  onChange={(e) =>
+                    handlePlatformChange("Web", e.target.checked)
+                  }
                   className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                 />
                 <span className="text-sm text-gray-700">Web</span>
@@ -59,43 +74,45 @@ export default function FeedbackFilter({
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={filters.status.includes("Platform")}
+                  checked={filters.platform.includes("App")}
                   onChange={(e) =>
-                    handleStatusChange("Platform", e.target.checked)
+                    handlePlatformChange("App", e.target.checked)
                   }
                   className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                 />
-                <span className="text-sm text-gray-700">Platform</span>
+                <span className="text-sm text-gray-700">App</span>
               </label>
             </div>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-700 mb-2">
-              Search By Commet
+              Search By Comment
             </p>
             <div className="flex gap-6">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={filters.status.includes("Closed")}
+                  checked={filters.comment.includes("Read")}
                   onChange={(e) =>
-                    handleStatusChange("Closed", e.target.checked)
+                    handleCommentChange("Read", e.target.checked)
                   }
                   className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                 />
-                <span className="text-sm text-gray-700">Closed</span>
+                <span className="text-sm text-gray-700">Read</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={filters.status.includes("Open")}
-                  onChange={(e) => handleStatusChange("Open", e.target.checked)}
+                  checked={filters.comment.includes("Unread")}
+                  onChange={(e) =>
+                    handleCommentChange("Unread", e.target.checked)
+                  }
                   className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                 />
-                <span className="text-sm text-gray-700">Opened</span>
+                <span className="text-sm text-gray-700">Unread</span>
               </label>
             </div>
-          </div>{" "}
+          </div>
           <div>
             <p className="text-sm font-medium text-gray-700 mb-2">
               Search By Status
@@ -104,24 +121,24 @@ export default function FeedbackFilter({
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={filters.status.includes("Sloved")}
+                  checked={filters.status.includes("Solved")}
                   onChange={(e) =>
-                    handleStatusChange("Sloved", e.target.checked)
+                    handleStatusChange("Solved", e.target.checked)
                   }
                   className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                 />
-                <span className="text-sm text-gray-700">Sloved</span>
+                <span className="text-sm text-gray-700">Solved</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={filters.status.includes("Unsloved")}
+                  checked={filters.status.includes("Unsolved")}
                   onChange={(e) =>
-                    handleStatusChange("Unsloved", e.target.checked)
+                    handleStatusChange("Unsolved", e.target.checked)
                   }
                   className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                 />
-                <span className="text-sm text-gray-700">Closed</span>
+                <span className="text-sm text-gray-700">Unsolved</span>
               </label>
             </div>
           </div>
