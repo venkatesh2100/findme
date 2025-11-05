@@ -4,7 +4,6 @@ interface Filters {
   status: string[];
 }
 
-// TicketFilter Component
 export default function TicketFilter({
   filters,
   onFilterChange,
