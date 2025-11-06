@@ -1,3 +1,4 @@
+import { useState } from "react";
 interface Feedback {
   id: number;
   name: string;
@@ -19,7 +20,12 @@ export default function AllFeedbacks({
   tickets: Feedback[];
 }) {
   const displayFeedbacks = isMaximized ? tickets : tickets.slice(0, 5);
+  const [selectedTicket, setSelectedTicket] = useState<number | null>(null);
 
+  const handelClick = (ticket: Feedback) => {
+    setSelectedTicket(ticket.id);
+    onTicketSelect(ticket);
+  };
   return (
     <div className="overflow-x-auto mt-4 rounded-xl border border-gray-100 shadow-sm">
       <div className="overflow-x-auto mt-2 p-2">
@@ -34,13 +40,21 @@ export default function AllFeedbacks({
               <th className="p-3 text-left font-medium">Close Date</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="">
             {displayFeedbacks.length > 0 ? (
-              displayFeedbacks.map((feedback) => (
+              displayFeedbacks.map((feedback, index) => (
                 <tr
-                  onClick={() => onTicketSelect(feedback)}
+                  onClick={() => handelClick(feedback)}
                   key={feedback.id}
-                  className="hover:bg-gray-50 cursor-pointer"
+                  className={`hover:bg-gray-200  duration-150 transition-colors cursor-pointer ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  }
+                    ${
+                      selectedTicket === feedback.id
+                        ? "border  border-gray-700"
+                        : ""
+                    }
+                    `}
                 >
                   <td className="p-3 flex items-center gap-2">
                     <img

@@ -20,6 +20,7 @@
     "recharts": "^3.1.0",
     "redoc": "^2.5.0",
     "swagger-ui": "^5.27.1",
+    "tailwind-scrollbar": "^4.0.2",
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {

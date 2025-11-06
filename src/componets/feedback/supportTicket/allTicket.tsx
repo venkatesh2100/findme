@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface Ticket {
   id: string;
   name: string;
@@ -9,7 +11,6 @@ interface Ticket {
   status: string;
 }
 
-
 export default function AllTicket({
   isMaximized,
   onTicketSelect,
@@ -20,6 +21,12 @@ export default function AllTicket({
   tickets: Ticket[];
 }) {
   const displayTickets = isMaximized ? tickets : tickets.slice(0, 5);
+
+  const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
+  const onhandleClick = (ticket: Ticket) => {
+    setSelectedTicket(ticket.id);
+    onTicketSelect(ticket);
+  };
 
   return (
     <div className="overflow-x-auto mt-4 rounded-xl border border-gray-100 shadow-sm">
@@ -41,10 +48,14 @@ export default function AllTicket({
             displayTickets.map((ticket, index) => (
               <tr
                 key={ticket.id}
-                onClick={() => onTicketSelect(ticket)}
-                className={`transition-colors duration-150 cursor-pointer ${
+                onClick={() => onhandleClick(ticket)}
+                className={`  hover:bg-gray-200 transition-colors duration-150 cursor-pointer ${
                   index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                } hover:bg-gray-100`}
+                } ${
+                  selectedTicket === ticket.id
+                    ? "  border-l-4 border-blue-400 "
+                    : ""
+                }`}
               >
                 <td className="px-4 py-3">{ticket.id}</td>
                 <td className="px-4 py-3">{ticket.name}</td>
