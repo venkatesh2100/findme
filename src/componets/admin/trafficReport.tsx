@@ -26,10 +26,10 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
         <text
           x={0}
           y={0}
-          dy={3}
+          dy={5}
           textAnchor="middle"
           fill="#1e293b"
-          fontSize={10}
+          fontSize={14}
           fontFamily="Inter"
         >
           {firstLine}
@@ -37,10 +37,10 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
         <text
           x={0}
           y={0}
-          dy={16}
+          dy={18}
           textAnchor="middle"
           fill="#1e293b"
-          fontSize={10}
+          fontSize={14}
           fontFamily="Inter"
         >
           {secondLine}
@@ -53,14 +53,35 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
     <text
       x={x}
       y={y}
-      dy={10}
+      dy={12}
       textAnchor="middle"
       fill="#1e293b"
-      fontSize={10}
+      fontSize={14}
       fontFamily="Inter"
     >
       {value}
     </text>
+  );
+};
+
+// Custom Y-axis tick component with pointer and number positioned to the left
+const CustomYAxisTick = ({ x, y, payload }: any) => {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <line x1={0} y1={0} x2={5} y2={0} stroke="#94a3b8" strokeWidth={0.5} />
+      <text
+        x={0}
+        y={0}
+        dx={-5}
+        dy={4}
+        textAnchor="end"
+        fill="#1e293b"
+        fontSize={10}
+        fontFamily="Inter"
+      >
+        {payload.value}
+      </text>
+    </g>
   );
 };
 
@@ -95,7 +116,7 @@ const generateTrafficData = () =>
   COUNTRIES.map((country) => ({
     country,
     value: Math.floor(Math.random() * 2800) + 100,
-  })).sort((a, b) => b.value - a.value);
+  }));
 
 // ✅ Dropdown
 const CustomDropdown = () => {
@@ -114,17 +135,17 @@ const CustomDropdown = () => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef} style={{ width: "215px" }}>
+    <div className="relative" ref={dropdownRef} style={{ width: "180px" }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="bg-white shadow-sm w-full text-left flex items-center justify-between"
         style={{
           fontFamily: "Inter",
-          fontSize: "15px",
-          height: "50px",
+          fontSize: "14px",
+          height: "42px",
           border: "1px solid #d1d5db",
-          borderRadius: "15px",
-          padding: "0 16px",
+          borderRadius: "12px",
+          padding: "0 14px",
           color: "#718EBF",
           cursor: "pointer",
         }}
@@ -170,50 +191,53 @@ const CustomDropdown = () => {
 
 export default function TrafficReport({ data }: { data?: { country: string; value: number }[] }) {
   const trafficData = data || generateTrafficData();
-  const containerWidth = 1200;
-  const chartContentWidth = Math.max(1200, trafficData.length * 60);
+  const containerWidth = 1000;
+  const chartContentWidth = Math.max(1000, trafficData.length * 100);
 
   return (
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
       {/* Header */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => window.history.back()}
-            className="text-gray-600 hover:text-gray-800 transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <p className="text-gray-700 text-sm" style={{ fontFamily: "Inter" }}>
-            This chart shows where our users are accessing Find Me from, based on country-level traffic.
-          </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => window.history.back()}
+              className="text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <p className="text-gray-700 text-sm lg:text-base" style={{ fontFamily: "Inter" }}>
+              This chart shows where our users are accessing Find Me from, based on country-level traffic.
+            </p>
+          </div>
+          <CustomDropdown />
         </div>
-        <CustomDropdown />
       </div>
 
       {/* Chart Box */}
-      <div className="bg-white shadow-md" style={{ padding: "40px 36px", borderRadius: "35px" }}>
+      <div className="bg-white shadow-md rounded-[35px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-5 sm:py-6 lg:py-8">
         <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Inter" }}>
+          <h2 className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Inter", fontSize: "18px" }}>
             Traffic Location
           </h2>
         </div>
 
         {/* Wrapper for scrollable container and axis labels */}
-        <div style={{ position: "relative", width: `${containerWidth}px` }}>
+        <div className="w-full lg:w-auto" style={{ position: "relative", maxWidth: `${containerWidth}px`, margin: "0 auto" }}>
           {/* Scrollable chart container */}
           <div
-            className="overflow-x-auto overflow-y-visible custom-scrollbar"
+            className="overflow-x-auto overflow-y-visible custom-scrollbar w-full lg:w-auto"
             style={{
-              width: `${containerWidth}px`,
+              width: "100%",
+              maxWidth: `${containerWidth}px`,
               scrollbarWidth: "thin",
               scrollbarColor: "#cbd5e1 #f1f5f9",
               maxHeight: "600px",
               outline: "none",
               border: "none",
-              paddingBottom: "40px",
+              paddingBottom: "8px",
             }}
             onMouseDown={(e) => e.preventDefault()}
             onFocus={(e) => e.target.blur()}
@@ -226,17 +250,17 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                     data={trafficData}
                     // ✅ Bottom gap fix
                     margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
-                    barCategoryGap={44.13}
+                    barCategoryGap={30}
                     style={{ outline: "none", border: "none" }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.3} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.3} vertical={false} horizontal={false} />
                     <XAxis
                       dataKey="country"
                       // ✅ Reduced height
                       height={60}
                       interval={0}
-                      axisLine={false}
-                      tickLine={false}
+                      axisLine={{ stroke: "#cbd5e1", strokeDasharray: "3 3", strokeOpacity: 0.6 }}
+                      tickLine={{ stroke: "#94a3b8", strokeWidth: 0.5 }}
                       tick={<CustomXAxisTick />}
                     />
                     <YAxis
@@ -247,14 +271,14 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                         style: {
                           textAnchor: "center",
                           fontSize: "12px",
-                          fill: "#1e293b",
+                          fill: "#94a3b8",
                           fontFamily: "Inter",
                         },
                       }}
-                      domain={[0, 3000]}
+                      domain={[-50, 3000]}
                       ticks={[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000]}
-                      tick={{ fontSize: 10, fill: "#1e293b", fontFamily: "Inter" }}
-                      axisLine={false}
+                      tick={<CustomYAxisTick />}
+                      axisLine={{ stroke: "#cbd5e1", strokeDasharray: "3 3", strokeOpacity: 0.6 }}
                       tickLine={false}
                     />
                     <Tooltip
@@ -285,37 +309,20 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
             </div>
           </div>
 
-          {/* X-axis label - "Country" aligned with 1200px container */}
+          {/* X-axis label - "Year 2025-2026" aligned with container, styled like Y-axis */}
           <div
-            className="text-gray-600"
+            className="w-full lg:w-auto"
             style={{
               position: "absolute",
-              bottom: "20px",
+              bottom: "25px",
               left: "50%",
               transform: "translateX(-50%)",
-              width: `${containerWidth}px`,
+              width: "100%",
+              maxWidth: `${containerWidth}px`,
               fontFamily: "Inter",
               fontSize: "12px",
               textAlign: "center",
-              pointerEvents: "none",
-              zIndex: 10,
-            }}
-          >
-            <p>Country</p>
-          </div>
-
-          {/* Year label - aligned with 1200px container, above scrollbar */}
-          <div
-            className="text-gray-600"
-            style={{
-              position: "absolute",
-              bottom: "2px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: `${containerWidth}px`,
-              fontFamily: "Inter",
-              fontSize: "10px",
-              textAlign: "center",
+              color: "#94a3b8",
               pointerEvents: "none",
               zIndex: 10,
             }}

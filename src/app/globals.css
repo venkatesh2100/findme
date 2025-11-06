@@ -30,10 +30,26 @@ body {
   height: 8px;
 }
 
+/* Remove scrollbar navigation arrows completely */
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-button:start:decrement,
+.custom-scrollbar::-webkit-scrollbar-button:end:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: #f1f5f9;
   border-radius: 4px;
   margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
