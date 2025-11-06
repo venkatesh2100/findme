@@ -34,7 +34,9 @@ Fydme is a full-stack portfolio management platform.
 
 ```bash
 git clone https://github.com/venkatesh2100/findme.git
-cd finde
+cd findme
+git branch -a
+git checkout develop
 ```
 
 ---

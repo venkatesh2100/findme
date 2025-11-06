@@ -7,8 +7,8 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("adminInfo");
 
   return (
-    <div className="min-h-screen ml-60 font-sans text-gray-900">
-      <h1 className="text-xl font-semibold mb-8">Setting</h1>
+    <div className="min-h-screen my-10 mx-20 font-sans text-gray-900">
+      <h1 className="text-3xl font-semibold mb-10">Setting</h1>
 
       <nav className="flex space-x-8 text-sm mb-6 font-normal">
         <button

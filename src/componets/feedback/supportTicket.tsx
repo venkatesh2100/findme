@@ -2,6 +2,7 @@ import { Maximize2, Minimize2, Filter } from "lucide-react";
 import TicketFilter from "./supportTicket/ticketFilter";
 import { useState, useMemo } from "react";
 import AllTicket from "./supportTicket/allTicket";
+import { useRef, useEffect } from "react";
 interface Ticket {
   id: string;
   name: string;
@@ -18,7 +19,11 @@ interface Filters {
   ticketID: string;
   status: string[];
 }
-
+interface TicketComment {
+  author: string;
+  time: string;
+  message: string;
+}
 export default function SupportTicket() {
   const allTickets: Ticket[] = [
     {
@@ -130,6 +135,38 @@ export default function SupportTicket() {
   const [ticketAssigned, setTicketAssigned] = useState("");
   const [ticketComment, setTicketComment] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [ticketComments, setTicketComments] = useState<TicketComment[]>([
+    {
+      author: "Sam",
+      time: "Nov 2 · 9:43 AM",
+      message:
+        "We’re currently looking into this issue and will update you once we have more information.",
+    },
+  ]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to bottom whenever ticketComments changes
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [ticketComments]);
+
+  const handleAddComment = () => {
+    if (ticketComment.trim() === "") return;
+    const newComment = {
+      author: "You",
+      time: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      }),
+      message: ticketComment.trim(),
+    };
+    setTicketComments((prev) => [...prev, newComment]);
+    setTicketComment("");
+  };
 
   const [filters, setFilters] = useState<Filters>({
     userName: "",
@@ -305,10 +342,11 @@ export default function SupportTicket() {
                   >
                     <option>Sam</option>
                     <option>Dylan</option>
-                    <option>Sheema</option>
+                    <option>Sheema</option>-
                   </select>
                 </div>
-                <div className="flex items-start gap-4 w-full">
+                {/* old Comment Section's */}
+                {/* <div className="flex items-start gap-4 w-full">
                   <label className="font-medium text-gray-700 mt-2">
                     Comment
                   </label>
@@ -322,6 +360,50 @@ export default function SupportTicket() {
                       <button className="px-4 py-1 border rounded-md text-sm hover:bg-gray-200 transition">
                         Send
                       </button>
+                    </div>
+                  </div>
+                </div> */}
+                <div className="mt-4">
+                  <h3 className="font-semibold text-gray-600 mb-3">Comments</h3>
+                  <div
+                    ref={containerRef}
+                    id="comment-scroll"
+                    className="max-h-38 overflow-y-auto pr-2 max-w-4xl space-y-4"
+                  >
+                    {ticketComments.map((comment, index) => (
+                      <div key={index}>
+                        <p className="flex  justify-between max-w-xl">
+                          <p className="text-sm text-gray-600 font-semibold">
+                            {comment.author}
+                          </p>
+                          <p className="text-sm text-gray-400 font-stretch-90%">
+                            {comment.time}
+                          </p>
+                        </p>
+                        <div className="bg-gray-100 text-gray-700 rounded-lg px-4 py-2 mt-1 inline-block max-w-xl">
+                          {comment.message}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Input Box */}
+                  <div className="flex items-start gap-4 max-w-4xl mt-4">
+                    <div className="flex-1 flex flex-col">
+                      <textarea
+                        value={ticketComment}
+                        onChange={(e) => setTicketComment(e.target.value)}
+                        placeholder="Add a comment..."
+                        className="w-full  border-gray-100 bg-gray-50 rounded-md px-3 py-2 text-sm outline-none resize-none h-16 focus:ring-1 focus:ring-[#2f5dd6]"
+                      ></textarea>
+                      <div className="flex justify-end mt-2">
+                        <button
+                          onClick={handleAddComment}
+                          className="px-4 py-1 border border-gray-400 rounded-md text-sm hover:bg-gray-200 transition"
+                        >
+                          Send
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
