@@ -14,7 +14,7 @@ export default function AdminMembersList() {
     setShowPopup(true);
   };
 
-  const handelClose =(e)=>{
+  const handelClose =(e: React.MouseEvent<HTMLDivElement>)=>{
     if(e.target === e.currentTarget){
       setShowPopup(false);
     }
