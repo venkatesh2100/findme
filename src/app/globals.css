@@ -24,3 +24,39 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } */
+
+/* Custom Scrollbar Styles for Traffic Report */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+  margin-top: 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Ensure scrollbar is always visible */
+.custom-scrollbar {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Remove focus outline from chart container */
+.custom-scrollbar:focus,
+.custom-scrollbar:focus-visible,
+.custom-scrollbar:active {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
