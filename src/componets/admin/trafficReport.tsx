@@ -195,31 +195,33 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
   const chartContentWidth = Math.max(1000, trafficData.length * 100);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+    <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10" style={{ maxWidth: "1100px" }}>
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-10" style={{ maxWidth: "1100px" }}>
         <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" style={{ marginLeft: "-60px" }}>
             <button
               onClick={() => window.history.back()}
               className="text-gray-600 hover:text-gray-800 transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
               </svg>
             </button>
             <p className="text-gray-700 text-sm lg:text-base" style={{ fontFamily: "Inter" }}>
               This chart shows where our users are accessing Find Me from, based on country-level traffic.
             </p>
           </div>
-          <CustomDropdown />
+          <div style={{ marginRight: "-40px" }}>
+            <CustomDropdown />
+          </div>
         </div>
       </div>
 
       {/* Chart Box */}
-      <div className="bg-white shadow-md rounded-[35px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-5 sm:py-6 lg:py-8">
+      <div className="bg-white shadow-md rounded-[35px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-6 lg:py-8" style={{ maxWidth: "1100px" }}>
         <div className="mb-4">
-          <h2 className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Inter", fontSize: "18px" }}>
+          <h2 className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Inter", fontSize: "18px", marginLeft: "35px" }}>
             Traffic Location
           </h2>
         </div>
@@ -228,16 +230,14 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
         <div className="w-full lg:w-auto" style={{ position: "relative", maxWidth: `${containerWidth}px`, margin: "0 auto" }}>
           {/* Scrollable chart container */}
           <div
-            className="overflow-x-auto overflow-y-visible custom-scrollbar w-full lg:w-auto"
+            className="overflow-x-auto overflow-y-visible hide-scrollbar-arrows w-full lg:w-auto"
             style={{
               width: "100%",
               maxWidth: `${containerWidth}px`,
-              scrollbarWidth: "thin",
-              scrollbarColor: "#cbd5e1 #f1f5f9",
               maxHeight: "600px",
               outline: "none",
               border: "none",
-              paddingBottom: "8px",
+              paddingBottom: "0px",
             }}
             onMouseDown={(e) => e.preventDefault()}
             onFocus={(e) => e.target.blur()}
@@ -277,6 +277,8 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                       }}
                       domain={[-50, 3000]}
                       ticks={[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000]}
+                      interval={0}
+                      allowDecimals={false}
                       tick={<CustomYAxisTick />}
                       axisLine={{ stroke: "#cbd5e1", strokeDasharray: "3 3", strokeOpacity: 0.6 }}
                       tickLine={false}
@@ -314,7 +316,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
             className="w-full lg:w-auto"
             style={{
               position: "absolute",
-              bottom: "25px",
+              bottom: "40px",
               left: "50%",
               transform: "translateX(-50%)",
               width: "100%",
@@ -327,7 +329,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
               zIndex: 10,
             }}
           >
-            <p>Year 2025-2026</p>
+            <p>YEAR 2025-2026</p>
           </div>
         </div>
       </div>
