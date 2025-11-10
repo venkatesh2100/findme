@@ -51,7 +51,7 @@ export default function AllFeedbacks({
                   }
                     ${
                       selectedTicket === feedback.id
-                        ? "border  border-gray-700"
+                        ? "border-l-4 border-blue-400"
                         : ""
                     }
                     `}
