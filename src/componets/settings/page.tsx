@@ -7,7 +7,7 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("adminInfo");
 
   return (
-    <div className="min-h-screen ml-60 font-sans text-gray-900">
+    <div className="font-sans text-gray-900 xl:px-[96px] lg:px-[66px]">
       <h1 className="text-xl font-semibold mb-8">Setting</h1>
 
       <nav className="flex space-x-8 text-sm mb-6 font-normal">
@@ -19,7 +19,7 @@ export default function SettingsPage() {
               : "text-gray-600 hover:text-gray-900"
           }`}
         >
-          Admin Info
+          Add Admin Member
         </button>
         <button
           onClick={() => setActiveTab("listAdmin")}
@@ -39,19 +39,27 @@ export default function SettingsPage() {
               : "text-gray-600 hover:text-gray-900"
           }`}
         >
-          Team Info
+          Add Team Member
         </button>
-        <a href="#" className="text-gray-600 hover:text-gray-900">
+
+        <button
+          onClick={() => setActiveTab("listTeam")}
+          className={`pb-1 ${
+            activeTab === "listTeam"
+              ? "text-[#2f5dd6] font-semibold border-b-2 border-[#2f5dd6]"
+              : "text-gray-600 hover:text-gray-900"
+          }`}
+        >
           List of Team Members
-        </a>
+        </button>
         <a href="#" className="text-gray-600 hover:text-gray-900">
           Verification Info
         </a>
       </nav>
 
-      {activeTab === "adminInfo" && <AdminInfoForm />}
+      {activeTab === "adminInfo" && <AdminInfoForm setActiveTab={setActiveTab} />}
       {activeTab === "listAdmin" && <AdminMembersList />}
-      {activeTab === 'teamInfo' && <TeamInfoForm/>}
+      {activeTab === 'teamInfo' && <TeamInfoForm setActiveTab={setActiveTab}/>}
     </div>
   );
 }
