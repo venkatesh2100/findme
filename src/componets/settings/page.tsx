@@ -1,16 +1,31 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminInfoForm from "./adminInfo";
 import AdminMembersList from "./adminMemberList";
 import TeamInfoForm from "./teamInfo";
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState("adminInfo");
+  const [activeTab, setActiveTab] = useState<string | null>(null);
 
+  useEffect(() => {
+    const saveTab = localStorage.getItem("activeTab");
+    if (saveTab) {
+      setActiveTab(saveTab);
+    }else{
+      setActiveTab("adminInfo")
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeTab !== null) {
+      localStorage.setItem("activeTab", activeTab);
+    }
+  }, [activeTab]);
+if(!activeTab) return null;
   return (
-    <div className="font-sans text-gray-900 xl:px-[96px] lg:px-[66px]">
-      <h1 className="text-xl font-semibold mb-8">Setting</h1>
+    <div className="min-h-screen my-10 mx-30 font-sans text-gray-900">
+      <h1 className="text-3xl font-semibold mb-10">Setting</h1>
 
-      <nav className="flex space-x-8 text-sm mb-6 font-normal">
+      <nav className="flex space-x-10 text-sm mb-6 font-normal">
         <button
           onClick={() => setActiveTab("adminInfo")}
           className={`pb-1 ${

@@ -20,9 +20,9 @@ const COLORS = {
   // cardBg: "#eaf0fa",
   cardBg: "#ffffff",
   border: "#cfe0ff",
-  textDark: "#0f172a", // slate-900
-  text: "#1f2937", // gray-800
-  subText: "#6b7280", // gray-500
+  textDark: "#0f172a",
+  text: "#1f2937",
+  subText: "#6b7280", //
   blueMid: "#1564CA",
   blue: "#A4DCFD",
   blueDeep: "#052471",
@@ -71,7 +71,6 @@ export default function PerformanceMetricPage() {
     { name: "South Korea", value: 82 },
   ];
 
-
   const stateData = [
     { name: "AL", value: 42 },
     { name: "AK", value: 28 },
@@ -119,7 +118,6 @@ export default function PerformanceMetricPage() {
         >
           Overview
         </h1>
-
         {/* Users */}
         <h2
           className="text-[24px] font-semibold mb-3"
@@ -250,7 +248,6 @@ export default function PerformanceMetricPage() {
             </div>
           ))}
         </div>
-
         {/* App Performance */}
         <h2
           className="text-[24px] font-semibold  mb-3"
@@ -314,7 +311,6 @@ export default function PerformanceMetricPage() {
             </div>
           ))}
         </div>
-
         {/* System Health */}
         <h2
           className="text-[24px] font-semibold mb-3"
@@ -453,7 +449,6 @@ export default function PerformanceMetricPage() {
             </div>
           </div>
         </div>
-
         {/* Server Usage */}
         <h2
           className="text-[24px] font-semibold mb-3"
@@ -461,8 +456,6 @@ export default function PerformanceMetricPage() {
         >
           Server Usage
         </h2>
-
-        {/* By Country */}
         <div
           className="rounded-2xl p-6 shadow border mb-6"
           style={{ backgroundColor: COLORS.cardBg, borderColor: COLORS.border }}
@@ -505,7 +498,6 @@ export default function PerformanceMetricPage() {
             </ResponsiveContainer>
           </div>
         </div>
-
         {/* By State */}
         <div
           className="rounded-2xl p-6 shadow border"

@@ -97,6 +97,7 @@ const CustomMemberTable = () => {
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
+  //? Paginated Data n-1 * r , n 
   const paginatedData = filteredData.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
@@ -109,7 +110,7 @@ const CustomMemberTable = () => {
         const json = await res.json();
         if (json.success) {
           const formatted: Member[] = json.data.map((item: Member) => ({
-            avatar: item.avatar || "", // no default here, we handle fallback later
+            avatar: item.avatar || "",
             "Member Name": item["Member Name"],
             Username: item.Username,
             "No. Of Portfolios": item["No. Of Portfolios"]?.toString() || "0",
@@ -122,7 +123,7 @@ const CustomMemberTable = () => {
           setData(formatted);
         }
       } catch (error) {
-        console.error("❌ Error fetching members:", error);
+        console.error(" Error fetching members:", error);
       } finally {
         setLoading(false);
       }
@@ -163,7 +164,7 @@ const CustomMemberTable = () => {
     style={{
       maxWidth:"1100px",
       maxHeight: "500x",
-      whiteSpace: "nowrap", 
+      whiteSpace: "nowrap",
     }}
   >
     <table className="text-sm min-w-max">
