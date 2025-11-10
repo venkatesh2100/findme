@@ -119,9 +119,8 @@ const generateTrafficData = () =>
   }));
 
 // ✅ Dropdown
-const CustomDropdown = () => {
+const CustomDropdown = ({ selectedValue, onSelect }: { selectedValue: string; onSelect: (value: string) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("Default");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -170,7 +169,7 @@ const CustomDropdown = () => {
             <div
               key={option}
               onClick={() => {
-                setSelectedValue(option);
+                onSelect(option);
                 setIsOpen(false);
               }}
               className="px-4 py-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100"
@@ -190,7 +189,29 @@ const CustomDropdown = () => {
 };
 
 export default function TrafficReport({ data }: { data?: { country: string; value: number }[] }) {
-  const trafficData = data || generateTrafficData();
+  const [selectedFilter, setSelectedFilter] = useState("Default");
+  const allTrafficData = data || generateTrafficData();
+  
+  // Filter data based on selected filter - analyzes from the graph data
+  // Sorts by value (descending) and shows only top N countries
+  const getFilteredData = () => {
+    if (selectedFilter === "Default") {
+      return allTrafficData;
+    } else if (selectedFilter === "Top 10") {
+      // Sort all data by value (highest to lowest) and take top 10
+      return [...allTrafficData]
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 10);
+    } else if (selectedFilter === "Top 20") {
+      // Sort all data by value (highest to lowest) and take top 20
+      return [...allTrafficData]
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 20);
+    }
+    return allTrafficData;
+  };
+
+  const trafficData = getFilteredData();
   const containerWidth = 1000;
   const chartContentWidth = Math.max(1000, trafficData.length * 100);
 
@@ -213,7 +234,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
             </p>
           </div>
           <div style={{ marginRight: "-40px" }}>
-            <CustomDropdown />
+            <CustomDropdown selectedValue={selectedFilter} onSelect={setSelectedFilter} />
           </div>
         </div>
       </div>
@@ -270,7 +291,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                         position: "insideLeft",
                         style: {
                           textAnchor: "center",
-                          fontSize: "12px",
+                          fontSize: "10px",
                           fill: "#94a3b8",
                           fontFamily: "Inter",
                         },
@@ -293,7 +314,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                         fontFamily: "Inter",
                       }}
                     />
-                    <Bar dataKey="value" radius={[4, 4, 4, 4]}>
+                    <Bar dataKey="value" radius={[8, 8, 8, 8]}>
                       {trafficData.map((entry, index) => {
                         const colorIndex = COUNTRIES.indexOf(entry.country);
                         return (
@@ -322,7 +343,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
               width: "100%",
               maxWidth: `${containerWidth}px`,
               fontFamily: "Inter",
-              fontSize: "12px",
+              fontSize: "10px",
               textAlign: "center",
               color: "#94a3b8",
               pointerEvents: "none",

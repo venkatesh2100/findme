@@ -529,7 +529,7 @@ export default function PerformanceMetricPage() {
                     cursor={{ fill: "transparent" }}
                     formatter={(v) => [`${v}`, "Usage"]}
                   />
-                  <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                  <Bar dataKey="value" radius={[8, 8, 0, 0]}>
                     {stateData.map((_, i) => (
                       <Cell
                         key={`s-${i}`}
