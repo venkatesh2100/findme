@@ -1,10 +1,36 @@
 import { useEffect, useRef, useState } from "react"
-import * as d3 from "d3"
+import * as d3 from 'd3'
 
 interface StateData {
   name: string
   code: string
   value: number
+}
+
+interface GeoFeature {
+  type: string
+  properties?: {
+    name?: string
+  }
+  geometry: {
+    type: string
+    coordinates: number[][][] | number[][][][]
+  }
+}
+
+interface GeoFeatureCollection {
+  type: string
+  features: GeoFeature[]
+}
+
+interface TopoJSON {
+  feature: (topology: unknown, object: unknown) => GeoFeatureCollection
+}
+
+declare global {
+  interface Window {
+    topojson?: TopoJSON
+  }
 }
 
 const STATES_DATA: StateData[] = [
@@ -70,7 +96,7 @@ export default function ChoroplethMap() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [stateData, setStateData] = useState<Map<string, StateData>>(new Map(STATES_DATA.map((d) => [d.code, d])))
   const [selectedState, setSelectedState] = useState<StateData | null>(STATES_DATA[0])
-  const [topology, setTopology] = useState<any>(null)
+  const [topology, setTopology] = useState<{ objects: { states: unknown } } | null>(null)
   const [topoJsonLoaded, setTopoJsonLoaded] = useState(false)
   const [tooltipState, setTooltipState] = useState<{ visible: boolean; x: number; y: number; text: string }>({
     visible: false,
@@ -98,14 +124,14 @@ export default function ChoroplethMap() {
     
     fetch("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
       .then((res) => res.json())
-      .then((data) => setTopology(data))
+      .then((data: { objects: { states: unknown } }) => setTopology(data))
       .catch((err) => console.error("Error loading topology:", err))
   }, [topoJsonLoaded])
 
   // Render map with responsive sizing
   useEffect(() => {
     if (!svgRef.current || !topology || !containerRef.current || !topoJsonLoaded) return
-    if (!(window as any).topojson) return
+    if (!window.topojson) return
 
     const container = containerRef.current
     const containerWidth = container.clientWidth
@@ -126,7 +152,7 @@ export default function ChoroplethMap() {
       .scale((containerWidth / 960) * 1300)
       .translate([containerWidth / 2, containerHeight / 2])
 
-    // Alaska projection - positioned in bottom left
+    // Alaska projection
     const alaskaProjection = d3
       .geoAlbers()
       .rotate([154, 0])
@@ -135,7 +161,7 @@ export default function ChoroplethMap() {
       .scale((containerWidth / 960) * 700)
       .translate([containerWidth * 0.15, containerHeight * 0.85])
 
-    // Hawaii projection - positioned near Alaska
+    // Hawaii projection
     const hawaiiProjection = d3
       .geoAlbers()
       .rotate([157, 0])
@@ -151,19 +177,23 @@ export default function ChoroplethMap() {
     const maxValue = Math.max(...Array.from(stateData.values()).map((d) => d.value))
     const colorScale = d3.scaleLinear<string>().domain([0, maxValue]).range(["#f0f0f0", "#76C2F9"])
 
-    const states = (window as any).topojson.feature(topology, topology.objects.states)
+    const states = window.topojson.feature(topology, topology.objects.states)
 
     svg.attr("width", containerWidth).attr("height", containerHeight)
 
     // Function to render states
-    const renderStates = (group: any, path: any, filter?: (name: string) => boolean) => {
+    const renderStates = (
+      group: d3.Selection<SVGGElement, unknown, null, undefined>,
+      path: d3.GeoPath,
+      filter?: (name: string) => boolean
+    ) => {
       group
         .selectAll("path")
-        .data(states.features.filter((d: any) => !filter || filter(d.properties?.name)))
+        .data(states.features.filter((d) => !filter || filter(d.properties?.name || "")))
         .enter()
         .append("path")
-        .attr("d", path as any)
-        .attr("fill", (d: any) => {
+        .attr("d", (d) => path(d as d3.GeoPermissibleObjects) || "")
+        .attr("fill", (d) => {
           const name = d.properties?.name || ""
           const code = STATE_CODES.get(name)
           if (!code) return "#e5e7eb"
@@ -173,25 +203,25 @@ export default function ChoroplethMap() {
         .attr("stroke", "#ffffff")
         .attr("stroke-width", 0.75)
         .style("cursor", "pointer")
-        .on("mouseenter", (e: any, d: any) => {
+        .on("mouseenter", function(event: MouseEvent, d) {
           const name = d.properties?.name || ""
           const code = STATE_CODES.get(name)
           if (code && stateData.has(code)) {
             const data = stateData.get(code)!
             setSelectedState(data)
-            d3.select(e.target).attr("opacity", 0.8)
+            d3.select(this).attr("opacity", 0.8)
           }
         })
-        .on("mouseleave", (e: any) => {
-          d3.select(e.target).attr("opacity", 1)
+        .on("mouseleave", function() {
+          d3.select(this).attr("opacity", 1)
           setTooltipState({ visible: false, x: 0, y: 0, text: "" })
         })
-        .on("mousemove", (e: any, d: any) => {
+        .on("mousemove", function(event: MouseEvent, d) {
           const name = d.properties?.name || ""
           const code = STATE_CODES.get(name)
           if (code && stateData.has(code)) {
             const data = stateData.get(code)!
-            const [x, y] = d3.pointer(e, container)
+            const [x, y] = d3.pointer(event, container)
             setTooltipState({
               visible: true,
               x: x,
@@ -230,9 +260,9 @@ export default function ChoroplethMap() {
 
       svg.attr("width", newWidth).attr("height", newHeight)
 
-      mainGroup.selectAll("path").attr("d", mainPath as any)
-      alaskaGroup.selectAll("path").attr("d", alaskaPath as any)
-      hawaiiGroup.selectAll("path").attr("d", hawaiiPath as any)
+      mainGroup.selectAll("path").attr("d", (d) => mainPath(d as d3.GeoPermissibleObjects) || "")
+      alaskaGroup.selectAll("path").attr("d", (d) => alaskaPath(d as d3.GeoPermissibleObjects) || "")
+      hawaiiGroup.selectAll("path").attr("d", (d) => hawaiiPath(d as d3.GeoPermissibleObjects) || "")
     }
 
     window.addEventListener("resize", handleResize)
@@ -266,7 +296,7 @@ export default function ChoroplethMap() {
       </div>
 
       {/* Sidebar */}
-      <div className="w-54 bg-white p-6 flex flex-col overflow-y-auto border-l border-gray-100">
+      <div className="w-64 bg-white p-6 flex flex-col overflow-y-auto border-l border-gray-100">
         <div className="flex items-center gap-2 mb-6 pb-4">
           <button className="text-gray-600 hover:text-gray-900">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -277,7 +307,7 @@ export default function ChoroplethMap() {
         </div>
 
         <div className="space-y-3">
-          {sortedStates.map((state, index) => (
+          {sortedStates.map((state) => (
             <div
               key={state.code}
               className="cursor-pointer transition-colors"
