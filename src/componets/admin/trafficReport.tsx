@@ -12,9 +12,25 @@ import {
   CartesianGrid,
 } from "recharts";
 
+type XAxisTickProps = {
+  x?: number;
+  y?: number;
+  payload?: {
+    value: string;
+  };
+};
+
+type YAxisTickProps = {
+  x?: number;
+  y?: number;
+  payload?: {
+    value: number;
+  };
+};
+
 // Custom tick component for multi-line country names
-const CustomXAxisTick = ({ x, y, payload }: any) => {
-  const value = payload.value;
+const CustomXAxisTick = ({ x, y, payload }: XAxisTickProps) => {
+  const value = payload?.value ?? "";
   const words = value.split(" ");
 
   if (words.length > 1 && value.length > 10) {
@@ -22,7 +38,7 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
     const firstLine = words.slice(0, mid).join(" ");
     const secondLine = words.slice(mid).join(" ");
     return (
-      <g transform={`translate(${x},${y})`}>
+      <g transform={`translate(${x ?? 0},${y ?? 0})`}>
         <text
           x={0}
           y={0}
@@ -51,8 +67,8 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
 
   return (
     <text
-      x={x}
-      y={y}
+      x={x ?? 0}
+      y={y ?? 0}
       dy={12}
       textAnchor="middle"
       fill="#1e293b"
@@ -65,9 +81,9 @@ const CustomXAxisTick = ({ x, y, payload }: any) => {
 };
 
 // Custom Y-axis tick component with pointer and number positioned to the left
-const CustomYAxisTick = ({ x, y, payload }: any) => {
+const CustomYAxisTick = ({ x, y, payload }: YAxisTickProps) => {
   return (
-    <g transform={`translate(${x},${y})`}>
+    <g transform={`translate(${x ?? 0},${y ?? 0})`}>
       <line x1={0} y1={0} x2={5} y2={0} stroke="#94a3b8" strokeWidth={0.5} />
       <text
         x={0}
@@ -79,7 +95,7 @@ const CustomYAxisTick = ({ x, y, payload }: any) => {
         fontSize={10}
         fontFamily="Inter"
       >
-        {payload.value}
+        {payload?.value}
       </text>
     </g>
   );
