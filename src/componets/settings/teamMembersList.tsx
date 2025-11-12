@@ -1,63 +1,68 @@
 import { useState } from "react";
 
-interface AdminList {
+interface TeamList {
   name: string;
   email: string;
   status: boolean;
   phoneNumber: string;
+  joinDate: string;
   role: string;
-  admin: string;
+  Team: string;
   username: string;
 }
 
-export default function AdminMembersList({
+export default function TeamMembersList({
   setActiveTab,
 }: {
   setActiveTab: (tab: string) => void;
 }) {
-  const members: AdminList[] = [
+  const members: TeamList[] = [
     {
-      name: "Sam",
-      email: "Admin25@email.com",
+      name: "Govardhan",
+      email: "Team25@email.com",
       status: true,
-      admin: "Admin 1",
+      Team: "Software ",
+      joinDate: "12/10/2024",
       phoneNumber: "101-203-2939",
-      role: "Role 1",
-      username: "Sam123",
+      role: "Software",
+      username: "Govardhan123",
     },
     {
-      name: "Tom",
-      email: "Admin225@gmail.com",
+      name: "Chandra",
+      email: "Team225@gmail.com",
       status: false,
-      admin: "Admin 2",
+      Team: "UI/ UX",
       phoneNumber: "101-203-3322",
-      role: "Role 2",
-      username: "Tom123",
+      joinDate: "02/11/2024",
+      role: "UI / UX",
+      username: "Chandra123",
     },
     {
-      name: "Venky",
-      email: "Admin25@email.com",
+      name: "Sandeep",
+      email: "Team25@email.com",
       status: true,
-      admin: "Admin 3",
+      Team: "Team 3",
+      joinDate: "21/10/2024",
       phoneNumber: "101-203-2939",
-      role: "Role 3",
-      username: "Venky",
+      role: "Cloud",
+      username: "Sandeep",
     },
     {
       name: "Paul",
-      email: "Admin225@gmail.com",
+      email: "Team225@gmail.com",
       status: false,
-      admin: "Admin 4",
+      joinDate: "31/12/2025",
+      Team: "Team 4",
       phoneNumber: "101-203-3322",
-      role: "Admin",
+      role: "QA",
       username: "Paul123",
     },
   ];
 
   const [selectedEmail, setSelectedEmail] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState<AdminList | null>(null);
-  const [adminStatus, setAdminStatus] = useState<boolean>(false);
+  const [selectedTicket, setSelectedTicket] = useState<TeamList | null>(null);
+  const [TeamStatus, setTeamStatus] = useState<boolean>(false);
 
   const handleResetClick = (email: string) => {
     setSelectedEmail(email);
@@ -70,8 +75,8 @@ export default function AdminMembersList({
     }
   };
 
-  const handleAdminSelect = (ticket: AdminList) => {
-    setAdminStatus(ticket.status);
+  const handleTeamSelect = (ticket: TeamList) => {
+    setTeamStatus(ticket.status);
     setSelectedTicket(ticket);
   };
 
@@ -79,7 +84,7 @@ export default function AdminMembersList({
     <div className="relative">
       <div className="bg-white rounded-lg shadow-sm p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-1">
-          List of Admin Members
+          List of Team Members
         </h2>
         <a href="#" className="text-sm underline mb-8 mx-3 inline-block">
           All Members
@@ -100,7 +105,10 @@ export default function AdminMembersList({
                     Active
                   </th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
-                    Admin Role
+                    Team Role
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                    Join Date
                   </th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
                     Reset Password
@@ -108,11 +116,12 @@ export default function AdminMembersList({
                   <th className="py-3 px-4"></th>
                 </tr>
               </thead>
+
               <tbody>
                 {members.map((member, index) => (
                   <tr
                     key={index}
-                    onClick={() => handleAdminSelect(member)}
+                    onClick={() => handleTeamSelect(member)}
                     className={`${
                       index % 2 === 0 ? "bg-white" : "bg-[#F8F9FA]"
                     } ${
@@ -167,6 +176,11 @@ export default function AdminMembersList({
                       </div>
                     </td>
                     <td className="py-4 px-4">
+                      <div className="flex items-center">
+                        <span className="text-sm tegra">{member.joinDate}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -200,17 +214,17 @@ export default function AdminMembersList({
             <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center mr-2">
               <span className="text-lg leading-none">+</span>
             </div>
-            Add Admin Member
+            Add Team Member
           </button>
         </div>
       </div>
 
-      {selectedTicket && (
+      {/* {selectedTicket && (
         <>
           <div className="mt-6 bg-white shadow-md rounded-2xl p-2">
             <div className="p-6">
               <h2 className="font-semibold text-gray-800 mb-6 text-lg">
-                Overview of Admin
+                Overview of Team
               </h2>
               <div className="space-y-4 text-gray-500 text-md">
                 <div>
@@ -228,13 +242,13 @@ export default function AdminMembersList({
                 <div>
                   <span className="font-medium">Status:</span>
                   <select
-                    value={adminStatus ? "Active" : "Inactive"}
+                    value={TeamStatus ? "Active" : "Inactive"}
                     onChange={(e) =>
-                      setAdminStatus(e.target.value === "Active")
+                      setTeamStatus(e.target.value === "Active")
                     }
                     className="ml-2 border border-gray-300 rounded-md px-2 py-1"
                   >
-                    <option value="Active"></option>
+                    <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
@@ -259,7 +273,7 @@ export default function AdminMembersList({
                   Close
                 </button>
                 <button className="border bg-[#1B1B1B] px-6 py-2 rounded-lg shadow-sm text-gray-100 font-medium transition">
-                  Next Admin
+                  Next Team
                 </button>
               </div>
             </div>
@@ -274,9 +288,9 @@ export default function AdminMembersList({
             </a>
           </div>
         </>
-      )}
+      )} */}
 
-      {showPopup && (
+      {/* {showPopup && (
         <div
           onClick={handleClose}
           className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
@@ -299,7 +313,7 @@ export default function AdminMembersList({
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

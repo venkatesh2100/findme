@@ -3,7 +3,6 @@ import { useState, useRef } from "react";
 import ProfilePictureModal from "./ProfilePictureModal";
 
 export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
-  // ✅ State for uploaded image
   const [preview, setPreview] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -42,6 +41,7 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
+      // console.log(imageUrl)
       setPreview(imageUrl);
     }
   };
@@ -51,27 +51,27 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
     if (isEditing) fileInputRef.current?.click();
   };
   const handleEditToggle = (e: React.FormEvent) => {
-    e.preventDefault();    
+    e.preventDefault();
     if (isEditing) {
       if (formRef.current) {
-        formRef.current.reset(); 
+        formRef.current.reset();
       }
       setPreview(null);
-      setSelectedOptions([]); 
-      setDropdownOpen(false); 
-      
+      setSelectedOptions([]);
+      setDropdownOpen(false);
+
     }
     setIsEditing((prev) => !prev);
   };
 
   const handleCancel = () => {
     if (formRef.current) {
-      formRef.current.reset(); 
+      formRef.current.reset();
     }
-    setPreview(null); //reset image back to default avatar
+    setPreview(null);
     setDropdownOpen(false);
-    setSelectedOptions([]); // clears all selected access types
-    setIsEditing(false); // lock all fields again
+    setSelectedOptions([]);
+    setIsEditing(false);
   };
 
   return (
@@ -91,15 +91,15 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
               justifyContent: "center",
               alignItems: "center",
             }}
-          >           
+          >
             <img
-              src={preview || "/iconamoon_profile-circle-fill.svg"} 
+              src={preview || "/iconamoon_profile-circle-fill.svg"}
               alt="Profile"
               style={{
                 width: "100%",
                 height: "100%",
-                objectFit: "cover", 
-                opacity: isEditing ? 1 : 0.7, 
+                objectFit: "cover",
+                opacity: isEditing ? 1 : 0.7,
               }}
             />
           </div>
@@ -117,7 +117,7 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
             disabled={!isEditing}
             className="font-[Noto Sans] text-black absolute bottom-[8px] left-[220px] translate-x-[-50%] inline-flex items-center gap-[10px] px-[10px]  rounded-[17px] bg-white shadow-[0_1px_6.5px_rgba(0,0,0,0.25)] text-[18px] text-[#2c678a] font-semibold border border-gray-200 hover:bg-gray-50 transition">
             <img
-            src="/vector.svg"
+            src="/Vector.svg"
             alt="Upload icon"
             className="w-[16px] h-[16px]"
           />
@@ -316,12 +316,12 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
 
         </div>
 
-        <div className="mt-10 flex justify-end">          
+        <div className="mt-10 flex justify-end">
           <button
             type="button"
             onClick={() => setActiveTab("listAdmin")}
-            className="inline-flex items-center gap-[8px] w-[244px] justify-end 
-                      text-[#0573E9] text-[15px] font-medium font-['Inter'] 
+            className="inline-flex items-center gap-[8px] w-[244px] justify-end
+                      text-[#0573E9] text-[15px] font-medium font-['Inter']
                       hover:underline transition-all"
           >
             Next Admin Member List Page
