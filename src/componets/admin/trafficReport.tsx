@@ -6,7 +6,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  Tooltip,
   ResponsiveContainer,
   Cell,
   CartesianGrid,
@@ -28,6 +27,13 @@ type YAxisTickProps = {
   };
 };
 
+type TooltipInfo = {
+  x: number;
+  y: number;
+  width: number;
+  value: number;
+};
+
 // Custom tick component for multi-line country names
 const CustomXAxisTick = ({ x, y, payload }: XAxisTickProps) => {
   const value = payload?.value ?? "";
@@ -44,7 +50,7 @@ const CustomXAxisTick = ({ x, y, payload }: XAxisTickProps) => {
           y={0}
           dy={5}
           textAnchor="middle"
-          fill="#1e293b"
+          fill="#464646"
           fontSize={14}
           fontFamily="Inter"
         >
@@ -55,7 +61,7 @@ const CustomXAxisTick = ({ x, y, payload }: XAxisTickProps) => {
           y={0}
           dy={18}
           textAnchor="middle"
-          fill="#1e293b"
+          fill="#464646"
           fontSize={14}
           fontFamily="Inter"
         >
@@ -71,7 +77,7 @@ const CustomXAxisTick = ({ x, y, payload }: XAxisTickProps) => {
       y={y ?? 0}
       dy={12}
       textAnchor="middle"
-      fill="#1e293b"
+      fill="#464646"
       fontSize={14}
       fontFamily="Inter"
     >
@@ -206,7 +212,22 @@ const CustomDropdown = ({ selectedValue, onSelect }: { selectedValue: string; on
 
 export default function TrafficReport({ data }: { data?: { country: string; value: number }[] }) {
   const [selectedFilter, setSelectedFilter] = useState("Default");
-  const allTrafficData = data || generateTrafficData();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [allTrafficData, setAllTrafficData] = useState(() => data ?? generateTrafficData());
+  const [tooltipInfo, setTooltipInfo] = useState<TooltipInfo | null>(null);
+
+  useEffect(() => {
+    if (data) {
+      setAllTrafficData(data);
+    }
+    setActiveIndex(null);
+    setTooltipInfo(null);
+  }, [data]);
+
+  useEffect(() => {
+    setActiveIndex(null);
+    setTooltipInfo(null);
+  }, [selectedFilter]);
   
   // Filter data based on selected filter - analyzes from the graph data
   // Sorts by value (descending) and shows only top N countries
@@ -281,7 +302,30 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
             tabIndex={-1}
           >
             <div style={{ minWidth: `${chartContentWidth}px`, outline: "none" }}>
-              <div style={{ width: "100%", height: "500px", outline: "none" }}>
+              <div style={{ width: "100%", height: "500px", outline: "none", position: "relative" }}>
+                {tooltipInfo && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: tooltipInfo.x + tooltipInfo.width / 2,
+                      top: tooltipInfo.y,
+                      transform: "translate(-50%, calc(-100% - 10px))",
+                      backgroundColor: "#EDF1F8",
+                      color: "#6B6B6B",
+                      borderRadius: "5px",
+                      padding: "5px 4.5px",
+                      fontFamily: "Inter",
+                      fontSize: "10px",
+                      fontWeight: 400,
+                      letterSpacing: "0.02em",
+                      boxShadow: "0 12px 24px rgba(59, 130, 246, 0.18)",
+                      pointerEvents: "none",
+                      opacity: 1,
+                    }}
+                  >
+                    {tooltipInfo.value}
+                  </div>
+                )}
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={trafficData}
@@ -289,7 +333,20 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                     margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
                     barCategoryGap={30}
                     style={{ outline: "none", border: "none" }}
+                    onMouseLeave={() => {
+                      setActiveIndex(null);
+                      setTooltipInfo(null);
+                    }}
                   >
+                    <defs>
+                      <filter id="bar-glow" x="-8%" y="-8%" width="116%" height="120%">
+                        <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                        <feMerge>
+                          <feMergeNode in="coloredBlur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.3} vertical={false} horizontal={false} />
                     <XAxis
                       dataKey="country"
@@ -320,17 +377,28 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                       axisLine={{ stroke: "#cbd5e1", strokeDasharray: "3 3", strokeOpacity: 0.6 }}
                       tickLine={false}
                     />
-                    <Tooltip
-                      formatter={(value: number) => [`${value}`, "Users"]}
-                      contentStyle={{
-                        backgroundColor: "#fff",
-                        border: "1px solid #e5e7eb",
-                        borderRadius: "6px",
-                        padding: "8px",
-                        fontFamily: "Inter",
+                    <Bar
+                      dataKey="value"
+                      radius={[8, 8, 8, 8]}
+                      onMouseMove={(barData, index) => {
+                        setActiveIndex(index);
+                        if (barData && typeof barData === "object") {
+                          const { x = 0, y = 0, width = 0, value, payload } = barData as {
+                            x?: number;
+                            y?: number;
+                            width?: number;
+                            value?: number;
+                            payload?: { value?: number };
+                          };
+                          const dataValue = value ?? payload?.value ?? 0;
+                          setTooltipInfo({ x, y, width, value: dataValue });
+                        }
                       }}
-                    />
-                    <Bar dataKey="value" radius={[8, 8, 8, 8]}>
+                      onMouseLeave={() => {
+                        setActiveIndex(null);
+                        setTooltipInfo(null);
+                      }}
+                    >
                       {trafficData.map((entry, index) => {
                         const colorIndex = COUNTRIES.indexOf(entry.country);
                         return (
@@ -338,6 +406,11 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                             key={`cell-${index}`}
                             fill={COUNTRY_COLORS[colorIndex % COUNTRY_COLORS.length]}
                             stroke="none"
+                            filter={activeIndex === index ? "url(#bar-glow)" : undefined}
+                            style={{
+                              transition: "filter 0.2s ease, transform 0.2s ease",
+                              transform: activeIndex === index ? "translateY(-4px)" : "translateY(0)",
+                            }}
                           />
                         );
                       })}
