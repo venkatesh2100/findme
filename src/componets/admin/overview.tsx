@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { TrafficBarChart } from "./trafficCard";
 import { PortfolioDonutChart } from "./portflioDonut";
 import EngagementChart from "./engagementCard";
@@ -29,6 +30,7 @@ type DashboardData = {
 };
 
 export default function Overview() {
+  const router = useRouter();
   const [timeFrame, setTimeFrame] = useState("yearly");
   const [activeTab, setActiveTab] = useState("overview");
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
@@ -89,7 +91,10 @@ export default function Overview() {
           <>
             <ChartCard title="Traffic Location">
               <TrafficBarChart data={dashboardData.traffic} />
-              <p className="text-blue-600 text-right pr-4 pt-4 text-sm cursor-pointer hover:underline">
+              <p 
+                onClick={() => router.push("/traffic-report")}
+                className="text-blue-600 text-right pr-4 pt-4 text-sm cursor-pointer hover:underline"
+              >
                 View More Report
               </p>
             </ChartCard>
