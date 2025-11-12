@@ -75,9 +75,9 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
   };
 
   return (
-    <div>
-      <h2 className="font-semibold text-sm mb-6">Admin Information</h2>
-      <form ref={formRef} onSubmit={handleEditToggle} className="max-w-lg space-y-5 ">
+    <div className="relative">
+      <h2 className="font-semibold text-[18px] mb-6">Admin Information</h2>
+      <form ref={formRef} onSubmit={handleEditToggle} className="space-y-5 ">
         <div className="relative flex justify-left items-center mb-8">
           <div
             style={{
@@ -115,7 +115,7 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
             type="button"
             onClick={() => setShowModal(true)}
             disabled={!isEditing}
-            className="font-[Noto Sans] text-black absolute bottom-[8px] left-[38%] translate-x-[-50%] inline-flex items-center gap-[10px] px-[10px]  rounded-[17px] bg-white shadow-[0_1px_6.5px_rgba(0,0,0,0.25)] text-[12px] text-[#2c678a] font-bold border border-gray-200 hover:bg-gray-50 transition">
+            className="font-[Noto Sans] text-black absolute bottom-[8px] left-[220px] translate-x-[-50%] inline-flex items-center gap-[10px] px-[10px]  rounded-[17px] bg-white shadow-[0_1px_6.5px_rgba(0,0,0,0.25)] text-[18px] text-[#2c678a] font-semibold border border-gray-200 hover:bg-gray-50 transition">
             <img
             src="/vector.svg"
             alt="Upload icon"
@@ -125,117 +125,120 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
           </button>
 
         </div>
-        <div>
-          <label className="block text-xs mb-1 font-semibold">
-            Enter First and Last Name<span className="text-red-500">*</span>
+        <div className="w-full flex flex-col gap-[6px]">
+          <label className="block w-full text-[12px] leading-[18px] font-[Noto Sans] font-semibold text-[#666]">
+            Enter First and Last Name
+            <span className="text-[#FF3737]">*</span>
           </label>
           <input
             type="text"
             required
             placeholder="Full Name"
             disabled={!isEditing}
-            className={`w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0] ${
+            className={`w-full rounded-[8px] border border-[#CCC] px-4 py-4 text-[16px] leading-[24px] font-[Noto Sans] font-normal text-[#666] placeholder-[#666] outline-none ${
               isEditing ? "bg-white" : "bg-[#F0F4FF]"
             }`}
           />
         </div>
-        <div>
-          <label className="block text-xs mb-1 font-semibold">Email Address<span className="text-red-500">*</span></label>
+
+        <div className="w-full flex flex-col gap-[6px]">
+          <label className="block w-full text-[12px] leading-[18px] font-[Noto Sans] font-semibold text-[#666]">Email Address<span className="text-[#FF3737]">*</span></label>
           <input
             type="email"
             required
             placeholder="email@fyndme.net"
             disabled={!isEditing}
-            className={`w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0] ${
+            className={`w-full rounded-[8px] border border-[#CCC] px-4 py-4 text-[16px] leading-[24px] font-[Noto Sans] font-normal text-[#666] placeholder-[#666] outline-none ${
               isEditing ? "bg-white" : "bg-[#F0F4FF]"
             }`}
           />
         </div>
 
-        <div>
-          <label className="block text-xs mb-1 font-semibold">Phone Number<span className="text-red-500">*</span></label>
+        <div className="w-full flex flex-col gap-[6px]">
+          <label className="block w-full text-[12px] leading-[18px] font-[Noto Sans] font-semibold text-[#666]">Phone Number<span className="text-red-500">*</span></label>
           <input
             type="tel"
             required
             placeholder="+ 1 (111) - (000) - (01010)"
             disabled={!isEditing}
-            className={`w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0] ${
+            className={`w-full rounded-[8px] border border-[#CCC] px-4 py-4 text-[16px] leading-[24px] font-[Noto Sans] font-normal text-[#666] placeholder-[#666] outline-none ${
               isEditing ? "bg-white" : "bg-[#F0F4FF]"
             }`}
           />
         </div>
 
-        <div>
-          <label className="block text-xs mb-1 font-semibold">Office Address<span className="text-red-500">*</span></label>
+        <div className="w-full flex flex-col gap-[6px]">
+          <label className="block w-full text-[12px] leading-[18px] font-[Noto Sans] font-semibold text-[#666]">Office Address<span className="text-red-500">*</span></label>
           <input
             placeholder="Enter Street, City, State, Country, Zip-code"
             required
             disabled={!isEditing}
-            className={`w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0] ${
+            className={`w-full rounded-[8px] border border-[#CCC] px-4 py-4 text-[16px] leading-[24px] font-[Noto Sans] font-normal text-[#666] placeholder-[#666] outline-none ${
               isEditing ? "bg-white" : "bg-[#F0F4FF]"
             }`}
           />
         </div>
 
-        <div>
-          <label className="block text-xs mb-1 font-semibold">Role<span className="text-red-500">*</span></label>
+        <div className="w-full flex flex-col gap-[6px]">
+          <label className="block w-full text-[12px] leading-[18px] font-[Noto Sans] font-semibold text-[#666]">Role<span className="text-red-500">*</span></label>
           <input
             type="text"
             required
             placeholder="Enter Role"
             disabled={!isEditing}
-            className={`w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0] ${
+            className={`w-full rounded-[8px] border border-[#CCC] px-4 py-4 text-[16px] leading-[24px] font-[Noto Sans] font-normal text-[#666] placeholder-[#666] outline-none ${
               isEditing ? "bg-white" : "bg-[#F0F4FF]"
             }`}
           />
         </div>
 
-        <div>
-          <label className="block text-xs mb-1 font-semibold">Username<span className="text-red-500">*</span></label>
+        <div className="w-full flex flex-col gap-[6px]">
+          <label className="block w-full text-[12px] leading-[18px] font-[Noto Sans] font-semibold text-[#666]">Username<span className="text-red-500">*</span></label>
           <input
             type="text"
             required
             placeholder="Enter username"
             disabled={!isEditing}
-            className={`w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0] ${
+            className={`w-full rounded-[8px] border border-[#CCC] px-4 py-4 text-[16px] leading-[24px] font-[Noto Sans] font-normal text-[#666] placeholder-[#666] outline-none ${
               isEditing ? "bg-white" : "bg-[#F0F4FF]"
             }`}
           />
         </div>
 
-        <div>
-          <label className="block text-xs mb-1 font-semibold">Password<span className="text-red-500">*</span></label>
+        <div className="w-full flex flex-col gap-[6px]">
+          <label className="block w-full text-[12px] leading-[18px] font-[Noto Sans] font-semibold text-[#666]">Password<span className="text-red-500">*</span></label>
           <input
             type="password"
             required
             placeholder="Enter password"
             disabled={!isEditing}
-            className={`w-full rounded-md px-3 py-2 text-sm text-[#666666] outline-none ring-1 ring-[#9ea5b0] ${
+            className={`w-full rounded-[8px] border border-[#CCC] px-4 py-4 text-[16px] leading-[24px] font-[Noto Sans] font-normal text-[#666] placeholder-[#666] outline-none ${
               isEditing ? "bg-white" : "bg-[#F0F4FF]"
             }`}
           />
         </div>
 
-        <div>
-          <label className="block text-xs mb-1 font-semibold">
-            Types of Access<span className="text-[#FF3737]">*</span>
+        <div className="w-full flex flex-col gap-[6px] font-[Noto Sans]">
+          <label className="block w-full text-[12px] leading-[18px] font-semibold text-[#666]">
+            Types of Access
+            <span className="text-[#FF3737]">*</span>
           </label>
+
           <div className="relative w-full">
             <div
               onClick={() => isEditing && setDropdownOpen(!dropdownOpen)}
-              className={`flex flex-wrap items-center justify-between rounded-md px-3 py-2 shadow-sm transition ${
+              className={`flex flex-wrap items-center justify-between rounded-[8px] border border-[#CCC] px-4 py-4 transition ${
                 isEditing
-                  ? "bg-white ring-[#9ea5b0] border border-[#9ea5b0] cursor-pointer"
-                  : "bg-[#F0F4FF] ring-[#9ea5b0] border border-[#9ea5b0] cursor-not-allowed"
+                  ? "bg-white cursor-pointer"
+                  : "bg-[#F0F4FF] cursor-not-allowed"
               }`}
-
             >
-              <div className="flex flex-wrap items-center justify-between gap-2 items-center text-[#666] font-[Noto Sans] text-[16px]">
+              <div className="flex flex-wrap items-center gap-2 text-[16px] leading-[24px] font-normal text-[#666]">
                 {selectedOptions.length > 0 ? (
                   selectedOptions.map((option) => (
                     <span
                       key={option}
-                        className="flex items-center gap-2 bg-[#F5F5F5] text-[#000] text-[13px] px-2 py-1 rounded-[6px]"
+                      className="flex items-center gap-2 bg-[#F5F5F5] text-[#000] text-[13px] px-2 py-1 rounded-[6px]"
                     >
                       {option}
                       <button
@@ -251,35 +254,35 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
                     </span>
                   ))
                 ) : (
-                  <span className="text-[#9ea5b0] text-sm font-normal font-[Noto Sans]">Select access type</span>
-
+                  <span className="text-[#666] text-[16px] font-normal">
+                    Select access type
+                  </span>
                 )}
               </div>
 
-              {/* Down arrow */}
               <img
                 src="/ic_outline-arrow-left.svg"
                 alt="Dropdown Arrow"
                 className={`w-[12px] h-[12px] ml-2 transition-transform ${
-                dropdownOpen ? "rotate-180" : "-rotate90"
+                  dropdownOpen ? "rotate-180" : "-rotate-0"
                 }`}
               />
             </div>
             {dropdownOpen && isEditing && (
               <div className="absolute mt-1 w-full bg-[#FFFFFF] rounded-[8px] shadow-[0_0_8px_rgba(0,0,0,0.14)] border border-gray-200 z-10">
                 {options.map((option) => (
-                <label
-                  key={option}
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-[#000] text-[13px] font-[Noto Sans]"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedOptions.includes(option)}
-                    onChange={() => handleOptionToggle(option)}
-                    className="accent-[#093488]"
-                  />
-                  {option}
-                </label>
+                  <label
+                    key={option}
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-[#000] text-[13px] font-[Noto Sans]"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedOptions.includes(option)}
+                      onChange={() => handleOptionToggle(option)}
+                      className="accent-[#093488]"
+                    />
+                    {option}
+                  </label>
                 ))}
               </div>
             )}
