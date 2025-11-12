@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import AdminInfoForm from "./adminInfo";
 import AdminMembersList from "./adminMemberList";
 import TeamInfoForm from "./teamInfo";
+import TeamMembersList from "./teamMembersList";
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
@@ -10,8 +11,8 @@ export default function SettingsPage() {
     const saveTab = localStorage.getItem("activeTab");
     if (saveTab) {
       setActiveTab(saveTab);
-    }else{
-      setActiveTab("adminInfo")
+    } else {
+      setActiveTab("adminInfo");
     }
   }, []);
 
@@ -20,7 +21,7 @@ export default function SettingsPage() {
       localStorage.setItem("activeTab", activeTab);
     }
   }, [activeTab]);
-if(!activeTab) return null;
+  if (!activeTab) return null;
   return (
     <div className="min-h-screen my-10 mx-30 font-sans text-gray-900">
       <h1 className="text-3xl font-semibold mb-10">Setting</h1>
@@ -72,9 +73,16 @@ if(!activeTab) return null;
         </a>
       </nav>
 
-      {activeTab === "adminInfo" && <AdminInfoForm setActiveTab={setActiveTab} />}
-      {activeTab === "listAdmin" && <AdminMembersList />}
-      {activeTab === 'teamInfo' && <TeamInfoForm setActiveTab={setActiveTab}/>}
+      {activeTab === "adminInfo" && (
+        <AdminInfoForm setActiveTab={setActiveTab} />
+      )}
+      {activeTab === "listAdmin" && (
+        <AdminMembersList setActiveTab={setActiveTab} />
+      )}
+      {activeTab === "teamInfo" && <TeamInfoForm setActiveTab={setActiveTab} />}
+      {activeTab === "listTeam" && (
+        <TeamMembersList setActiveTab={setActiveTab} />
+      )}
     </div>
   );
 }
