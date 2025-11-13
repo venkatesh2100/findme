@@ -94,7 +94,7 @@ const CustomYAxisTick = ({ x, y, payload }: YAxisTickProps) => {
       <text
         x={0}
         y={0}
-        dx={-5}
+        dx={-10}
         dy={4}
         textAnchor="end"
         fill="#1e293b"
@@ -249,13 +249,13 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
   };
 
   const trafficData = getFilteredData();
-  const containerWidth = 1000;
-  const chartContentWidth = Math.max(1000, trafficData.length * 100);
+  const containerWidth = 1200;
+  const chartContentWidth = Math.max(1200, trafficData.length * 100);
 
   return (
-    <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10" style={{ maxWidth: "1100px" }}>
+    <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10" style={{ maxWidth: "1300px" }}>
       {/* Header */}
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-10" style={{ maxWidth: "1100px" }}>
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-10" style={{ maxWidth: "1300px" }}>
         <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-2" style={{ marginLeft: "-60px" }}>
             <button
@@ -277,7 +277,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
       </div>
 
       {/* Chart Box */}
-      <div className="bg-white shadow-md rounded-[35px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-6 lg:py-8" style={{ maxWidth: "1100px" }}>
+      <div className="bg-white shadow-md rounded-[35px] mx-auto px-1 sm:px-2 lg:px-3 xl:px-4 py-5 sm:py-6 lg:py-8" style={{ maxWidth: "1300px" }}>
         <div className="mb-4">
           <h2 className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Inter", fontSize: "18px", marginLeft: "35px" }}>
             Traffic Location
@@ -288,7 +288,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
         <div className="w-full lg:w-auto" style={{ position: "relative", maxWidth: `${containerWidth}px`, margin: "0 auto" }}>
           {/* Scrollable chart container */}
           <div
-            className="overflow-x-auto overflow-y-visible hide-scrollbar-arrows w-full lg:w-auto"
+            className="overflow-x-auto overflow-y-hidden hide-scrollbar-arrows w-full lg:w-auto"
             style={{
               width: "100%",
               maxWidth: `${containerWidth}px`,
@@ -379,6 +379,7 @@ export default function TrafficReport({ data }: { data?: { country: string; valu
                     />
                     <Bar
                       dataKey="value"
+                      barSize={40}
                       radius={[8, 8, 8, 8]}
                       onMouseMove={(barData, index) => {
                         setActiveIndex(index);
