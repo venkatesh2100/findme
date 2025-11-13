@@ -13,8 +13,10 @@ interface TeamList {
 
 export default function TeamMembersList({
   setActiveTab,
+  setEditExistingTeam,
 }: {
   setActiveTab: (tab: string) => void;
+  setEditExistingTeam: (value: boolean) => void;
 }) {
   const members: TeamList[] = [
     {
@@ -194,8 +196,8 @@ export default function TeamMembersList({
                     <td className="py-4 px-4">
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          window.location.reload();
+                          setEditExistingTeam(true);
+                          setActiveTab("teamInfo");
                         }}
                         className="bg-gray-900 text-white px-6 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-800"
                       >
