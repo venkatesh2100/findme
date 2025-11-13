@@ -1,8 +1,16 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ProfilePictureModal from "./ProfilePictureModal";
 
-export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
+export default function TeamInfoForm({ 
+  setActiveTab, 
+  editExistingAdmin, 
+  setEditExistingAdmin, 
+}: { 
+  setActiveTab: (tab: string) => void; 
+  editExistingAdmin: boolean;
+  setEditExistingAdmin: (value: boolean) => void; 
+}) {
   const [preview, setPreview] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -10,6 +18,13 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (editExistingAdmin) {
+      setIsEditing(true);     // enable all fields
+    }
+  }, [editExistingAdmin]);
+
 
   const options = [
     "Create Admin Access",
@@ -68,6 +83,8 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
     if (formRef.current) {
       formRef.current.reset();
     }
+    setEditExistingAdmin(false);
+    setEditExistingAdmin(false);
     setPreview(null);
     setDropdownOpen(false);
     setSelectedOptions([]);
@@ -238,7 +255,7 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
                   selectedOptions.map((option) => (
                     <span
                       key={option}
-                      className="flex items-center gap-2 bg-[#F5F5F5] text-[#000] text-[13px] px-2 py-1 rounded-[6px]"
+                      className="flex items-center gap-2 bg-[#A4DCFD] text-[#000] text-[13px] px-2 py-1 rounded-[6px]"
                     >
                       {option}
                       <button
@@ -289,32 +306,101 @@ export default function TeamInfoForm({ setActiveTab }: { setActiveTab: (tab: str
           </div>
         </div>
 
-        <div className="flex justify-between items-center mt-8 ">
-          <button
-            type="button"
-            onClick={handleCancel}
-            disabled={!isEditing}
-            className={`px-6 py-2 rounded text-sm font-semibold transition ${
-              isEditing
-                ? "bg-[#abe3ff] text-[#2c678a] hover:bg-[#9bd0e8]"
-                : "bg-[#abe3ff] text-[#2c678a] cursor-not-allowed"
-            }`}
-          >
-            Cancel
-          </button>
+        {editExistingAdmin && isEditing ? (
+          /* MODE 3 — EDIT EXISTING ADMIN (coming from list)
+            → Cancel (left), Save (center), Delete (right)
+          */
+          <div className="relative w-full mt-12 flex items-center">
 
-          <button
-            type="submit"
-            className={`px-6 py-2 rounded text-sm font-semibold transition ${
-              isEditing
-                ? "bg-[#093488] text-white hover:bg-[#0b3fa5]"
-                : "bg-[#1b1b1b] text-white hover:bg-[#3a3a3a]"
-            }`}
-          >
-            {isEditing ? "Save" : "Edit"}
-          </button>
+            {/* LEFT — Cancel */}
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="px-6 py-2 rounded text-sm font-semibold transition
+                        bg-[#abe3ff] text-[#2c678a] hover:bg-[#9bd0e8]
+                        absolute left-0"
+            >
+              Cancel
+            </button>
 
-        </div>
+            {/* CENTER — Save */}
+            <button
+              type="submit"
+              className="px-6 py-2 rounded text-sm font-semibold transition
+                        bg-[#093488] text-white hover:bg-[#0b3fa5]
+                        absolute left-1/2 -translate-x-1/2"
+            >
+              Save
+            </button>
+
+            {/* RIGHT — Delete */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("listAdmin")}
+              className="px-6 py-2 rounded text-sm font-semibold transition
+                        bg-[#093488] text-[#ffffff]
+                        absolute right-0"
+            >
+              Delete Account
+            </button>
+
+          </div>
+
+        ) : !editExistingAdmin && isEditing ? (
+          /* MODE 2 — ADD MODE (AFTER USER CLICKS EDIT)
+            → Cancel (enabled, left) + Save (right)
+          */
+          <div className="flex justify-between items-center w-full mt-8">
+
+            {/* LEFT — Cancel */}
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="px-6 py-2 rounded text-sm font-semibold transition
+                        bg-[#abe3ff] text-[#2c678a] hover:bg-[#9bd0e8]"
+            >
+              Cancel
+            </button>
+
+            {/* RIGHT — Save */}
+            <button
+              type="submit"
+              className="px-6 py-2 rounded text-sm font-semibold transition
+                        bg-[#093488] text-white hover:bg-[#0b3fa5]"
+            >
+              Save
+            </button>
+
+          </div>
+
+        ) : (
+          /* MODE 1 — ADD MODE (INITIAL)
+            → Cancel (disabled, left) + Edit (grey, right)
+          */
+          <div className="flex justify-between items-center w-full mt-8">
+
+            {/* LEFT — Cancel (disabled) */}
+            <button
+              type="button"
+              disabled
+              className="px-6 py-2 rounded text-sm font-semibold transition
+                        bg-[#abe3ff] text-[#2c678a] cursor-not-allowed"
+            >
+              Cancel
+            </button>
+
+            {/* RIGHT — Edit */}
+            <button
+              type="button"
+              onClick={() => setIsEditing(true)}
+              className="px-6 py-2 rounded text-sm font-semibold transition
+                        bg-[#1b1b1b] text-white hover:bg-[#3a3a3a]"
+            >
+              Edit
+            </button>
+
+          </div>
+        )}
 
         <div className="mt-10 flex justify-end">
           <button

@@ -6,6 +6,8 @@ import TeamInfoForm from "./teamInfo";
 import TeamMembersList from "./teamMembersList";
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [editExistingAdmin, setEditExistingAdmin, ] = useState(false);
+  const [editExistingTeam, setEditExistingTeam, ] = useState(false);
 
   useEffect(() => {
     const saveTab = localStorage.getItem("activeTab");
@@ -74,14 +76,31 @@ export default function SettingsPage() {
       </nav>
 
       {activeTab === "adminInfo" && (
-        <AdminInfoForm setActiveTab={setActiveTab} />
+        <AdminInfoForm
+          setActiveTab={setActiveTab}
+          editExistingAdmin={editExistingAdmin}
+          setEditExistingAdmin={setEditExistingAdmin}
+        />
       )}
+
       {activeTab === "listAdmin" && (
-        <AdminMembersList setActiveTab={setActiveTab} />
+        <AdminMembersList 
+          setActiveTab={setActiveTab}
+          setEditExistingAdmin={setEditExistingAdmin}
+        />
       )}
-      {activeTab === "teamInfo" && <TeamInfoForm setActiveTab={setActiveTab} />}
+      {activeTab === "teamInfo" && (
+        <TeamInfoForm 
+          setActiveTab={setActiveTab}
+          editExistingTeam={editExistingTeam}
+          setEditExistingTeam={setEditExistingTeam}
+        />
+      )}
       {activeTab === "listTeam" && (
-        <TeamMembersList setActiveTab={setActiveTab} />
+        <TeamMembersList 
+          setActiveTab={setActiveTab}
+          setEditExistingTeam={setEditExistingTeam} 
+        />
       )}
     </div>
   );

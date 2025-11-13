@@ -12,8 +12,10 @@ interface AdminList {
 
 export default function AdminMembersList({
   setActiveTab,
+  setEditExistingAdmin,
 }: {
   setActiveTab: (tab: string) => void;
+  setEditExistingAdmin: (value: boolean) => void;
 }) {
   const members: AdminList[] = [
     {
@@ -180,8 +182,8 @@ export default function AdminMembersList({
                     <td className="py-4 px-4">
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          window.location.reload();
+                          setEditExistingAdmin(true);
+                          setActiveTab("adminInfo");
                         }}
                         className="bg-gray-900 text-white px-6 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-800"
                       >
