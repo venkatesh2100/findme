@@ -57,6 +57,26 @@ export default function TeamMembersList({
       role: "QA",
       username: "Paul123",
     },
+      {
+      name: "Fiza",
+      email: "Team225@gmail.com",
+      status: false,
+      joinDate: "31/12/2025",
+      Team: "Team 4",
+      phoneNumber: "101-203-3322",
+      role: "QA",
+      username: "Paul12",
+    },
+      {
+      name: "Sheema",
+      email: "Team225@gmail.com",
+      status: true,
+      joinDate: "31/12/2025",
+      Team: "Team 4",
+      phoneNumber: "101-203-3322",
+      role: "QA",
+      username: "Pau123",
+    },
   ];
 
   const [selectedEmail, setSelectedEmail] = useState("");
@@ -91,7 +111,7 @@ export default function TeamMembersList({
         </a>
 
         <div className="border border-gray-200 rounded-md">
-          <div className="max-h-[240px] overflow-y-auto">
+          <div className="max-h-[340px] overflow-y-auto">
             <table className="w-full border-collapse">
               <thead className="bg-[#F8F9FA] sticky top-0 z-10">
                 <tr className="border-b border-gray-200">
@@ -193,10 +213,7 @@ export default function TeamMembersList({
                     </td>
                     <td className="py-4 px-4">
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.location.reload();
-                        }}
+                        onClick={()=>setActiveTab("teamInfo")}
                         className="bg-gray-900 text-white px-6 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-800"
                       >
                         Edit
@@ -210,7 +227,10 @@ export default function TeamMembersList({
         </div>
 
         <div className="mt-6 flex items-center justify-end font-semibold text-[#666666]">
-          <button className="flex items-center text-sm hover:text-gray-900">
+          <button
+          onClick={()=> setActiveTab("teamInfo")}
+
+          className="flex items-center text-sm hover:text-gray-900">
             <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center mr-2">
               <span className="text-lg leading-none">+</span>
             </div>
@@ -219,7 +239,7 @@ export default function TeamMembersList({
         </div>
       </div>
 
-      {/* {selectedTicket && (
+      {selectedTicket && (
         <>
           <div className="mt-6 bg-white shadow-md rounded-2xl p-2">
             <div className="p-6">
@@ -280,7 +300,7 @@ export default function TeamMembersList({
           </div>
 
           <div
-            onClick={() => setActiveTab("teamInfo")}
+            onClick={() => setActiveTab("verifyinfo")}
             className="mt-4 text-right text-[#2E6FF2] text-sm font-medium cursor-pointer"
           >
             <a href="#" className="hover:underline">
@@ -288,9 +308,9 @@ export default function TeamMembersList({
             </a>
           </div>
         </>
-      )} */}
+      )}
 
-      {/* {showPopup && (
+       {showPopup && (
         <div
           onClick={handleClose}
           className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
@@ -313,7 +333,7 @@ export default function TeamMembersList({
             </button>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

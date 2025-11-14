@@ -52,6 +52,24 @@ export default function AdminMembersList({
       role: "Admin",
       username: "Paul123",
     },
+        {
+      name: "Fiza",
+      email: "Admin225@gmail.com",
+      status: false,
+      admin: "Admin 4",
+      phoneNumber: "101-203-3322",
+      role: "Admin",
+      username: "Pul123",
+    },
+        {
+      name: "Sheema",
+      email: "Admin225@gmail.com",
+      status: true,
+      admin: "Admin 4",
+      phoneNumber: "101-203-3322",
+      role: "Admin",
+      username: "Paul3",
+    },
   ];
 
   const [selectedEmail, setSelectedEmail] = useState("");
@@ -86,7 +104,7 @@ export default function AdminMembersList({
         </a>
 
         <div className="border border-gray-200 rounded-md">
-          <div className="max-h-[240px] overflow-y-auto">
+          <div className="max-h-[340px] overflow-y-auto">
             <table className="w-full border-collapse">
               <thead className="bg-[#F8F9FA] sticky top-0 z-10">
                 <tr className="border-b border-gray-200">
@@ -179,10 +197,7 @@ export default function AdminMembersList({
                     </td>
                     <td className="py-4 px-4">
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.location.reload();
-                        }}
+                        onClick={()=>setActiveTab("adminInfo")}
                         className="bg-gray-900 text-white px-6 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-800"
                       >
                         Edit
@@ -196,7 +211,9 @@ export default function AdminMembersList({
         </div>
 
         <div className="mt-6 flex items-center justify-end font-semibold text-[#666666]">
-          <button className="flex items-center text-sm hover:text-gray-900">
+          <button
+          onClick={()=>setActiveTab("adminInfo")}
+          className="flex items-center text-sm hover:text-gray-900">
             <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center mr-2">
               <span className="text-lg leading-none">+</span>
             </div>
@@ -234,7 +251,7 @@ export default function AdminMembersList({
                     }
                     className="ml-2 border border-gray-300 rounded-md px-2 py-1"
                   >
-                    <option value="Active"></option>
+                    <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
