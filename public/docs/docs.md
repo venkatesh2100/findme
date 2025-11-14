@@ -114,13 +114,13 @@ Fydme is a full-stack portfolio management platform.
   - [x] Dynamic Overview of Specific User Ticket with `Edit Options`
   - [x] Dynaimic Comments Updates from the Admins
 
-  #### Performance Metrics
-  - [x] User Overview Cards with Info
-  - [ ] User Info Card Graph remodel
-  - [x] App performance
-  - [x] System Health
-  - [x] Server usage Bar Graphs
-    - Need Tailwind Adjustments
+#### Performance Metrics
+- [x] User Overview Cards with Info
+- [ ] User Info Card Graph remodel
+- [x] App performance
+- [x] System Health
+- [x] Server usage Bar Graphs
+- Need Tailwind Adjustments
 
 #### Admin Tools
 - [x] Overview
@@ -153,4 +153,5 @@ Fydme is a full-stack portfolio management platform.
     - [ ] Socila Media
       - [x] Filters and Graphs
       - [ ] Graphs Filter Realations and Graph remodel
-      
+
+
