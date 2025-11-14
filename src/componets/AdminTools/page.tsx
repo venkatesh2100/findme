@@ -1,5 +1,42 @@
 import React from "react";
 export default function DashboardOverview() {
+  const COLORS = {
+    text: "#000000",
+    textDark: "#1A1A1A",
+    subText: "#666666",
+    border: "#CCCCCC",
+    blue: "#4290F9",
+    green: "#22C55E",
+    red: "#EF4444",
+    textGray: "#666666",
+  };
+  const adsData = [
+    {
+      platform: "Google Ads",
+      spend: "$2.5k",
+      progress: 30,
+      conversions: 225,
+      cost: "$13.44",
+      statusColor: "green",
+    },
+    {
+      platform: "Facebook",
+      spend: "$4.2k",
+      progress: 51,
+      conversions: 105,
+      cost: "$40.44",
+      statusColor: "red",
+    },
+    {
+      platform: "Instagram",
+      spend: "$1.5k",
+      progress: 18,
+      conversions: 125,
+      cost: "$13.44",
+      statusColor: "green",
+    },
+  ];
+
   return (
     <div className="min-h-screen px-8 py-6 font-sans">
       {/* Title */}
@@ -207,6 +244,88 @@ export default function DashboardOverview() {
             </tr>
           </tbody>
         </table>
+      </div>
+
+      {/* Advertisements Management */}
+      <h2 className="text-[20px] font-semibold mt-10 mb-4"> Advertisements Management </h2>
+      <div className="w-full grid grid-cols-3 gap-[37px]">
+        {adsData.map((item, idx) => (
+          <div
+            key={idx}
+            className="
+              bg-white rounded-[20px] border
+              flex flex-col justify-start items-start
+              p-4 shadow-sm
+            "
+            style={{ borderColor: COLORS.border }}
+          >
+            {/* Platform Name */}
+            <p
+              className="text-[13px] font-normal"
+              style={{ color: COLORS.textGray }}
+            >
+              {item.platform}
+            </p>
+
+            {/* Spend */}
+            <p
+              className="text-[24px] font-semibold"
+              style={{ color: COLORS.textDark }}
+            >
+              {item.spend}
+            </p>
+
+            {/* Spend Label */}
+            <p className="text-[12px]" style={{ color: COLORS.subText }}>
+              Spend this month
+            </p>
+
+            {/* Progress Bar */}
+            <div className="w-full mt-2">
+              <div className="w-full bg-gray-200 h-[4px] rounded-full">
+                <div
+                  className="h-[4px] bg-[#4290F9] rounded-full"
+                  style={{ width: `${item.progress}%` }}
+                ></div>
+              </div>
+            </div>
+
+            {/* % Total Spending */}
+            <p className="text-[12px] mt-1" style={{ color: COLORS.subText }}>
+              {item.progress}% Total Spending
+            </p>
+
+            {/* Conversions */}
+            <p
+              className="text-[20px] font-semibold mt-2"
+              style={{ color: COLORS.textDark }}
+            >
+              {item.conversions}
+            </p>
+            <p className="text-[12px]" style={{ color: COLORS.subText }}>
+              Conversions
+            </p>
+
+            {/* Cost per Conversion */}
+            <div className="flex items-center gap-1 mt-2">
+              <p
+                className="text-[16px] font-semibold"
+                style={{ color: COLORS.textDark }}
+              >
+                {item.cost}
+              </p>
+              <img
+                src={item.statusColor === "green" ? "/Ellipse 1114.svg" : "/Ellipse 1114 (1).svg"}
+                alt="status-dot"
+                className="w-[10px] h-[10px]"
+              />
+            </div>
+
+            <p className="text-[12px]" style={{ color: COLORS.subText }}>
+              Cost per conversion
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );
