@@ -150,7 +150,7 @@ export default function ChoroplethMap() {
     const mainProjection = d3
       .geoAlbersUsa()
       .scale((containerWidth / 960) * 1300)
-      .translate([containerWidth / 2, containerHeight / 2])
+      .translate([containerWidth / 2, containerHeight / 2.5])
 
     // Alaska projection
     const alaskaProjection = d3
