@@ -16,9 +16,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="flex">
         {!isTrafficReport && <Sidebar />}
-        <div className="flex-1 bg-[#e6f0fa]">
+        <div className="flex-1 bg-[#e6f0fa] min-h-screen">
           {!isTrafficReport && <HeaderRightProfile />}
-          <main style={{ paddingTop: "95px", paddingBottom: "50px" }}>{children}</main>
+          <main style={{ paddingTop: "20px", paddingBottom: "50px" }}>{children}</main>
         </div>
       </div>
     </div>

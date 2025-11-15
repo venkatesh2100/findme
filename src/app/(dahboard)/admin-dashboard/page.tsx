@@ -2,13 +2,13 @@
 import { useState } from "react";
 import  RocketCard  from "@/componets/admin/rocketcard";
 import Overview from "@/componets/admin/overview";
-import TrafficDashboard from "@/componets/admin/trafficDashboard"; 
+import TrafficDashboard from "@/componets/admin/trafficDashboard";
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    <main className="p-6 min-h-screen">
+    <main className="p-4">
       <RocketCard />
 
       {/* Tabs */}

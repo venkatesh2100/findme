@@ -9,7 +9,7 @@ export default function Sidebar() {
 
   const menuItems = [
     { id: "admin", label: "Admin Dashboard", icon: "/home.png", activeIcon: "/home-blue.png", path: "/admin-dashboard" },
-    { id: "users", label: "User Management", path: "/user-management" },
+    { id: "users", label: "User Management and Profile Analytics", path: "/user-management" },
     { id: "tools", label: "Admin Tools", path: "/admin-tools" },
     { id: "performance", label: "Performance Metric", path: "/performance-metric" },
     { id: "feedback", label: "Feedback & Support", path: "/feedback" },
@@ -50,10 +50,10 @@ export default function Sidebar() {
                 <div className="w-[20px] h-[20px]" />
               )}
               <span
-                className={`transition-colors leading-none ${
+                className={`transition-colors leading-[1.4] ${
                   pathname === item.path
                     ? "text-blue-600 font-semibold"
-                    : "text-gray-500 group-hover:text-gray-700"
+                    : "text-gray-500  group-hover:text-gray-700"
                 }`}
               >
                 {item.label}

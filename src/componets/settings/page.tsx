@@ -25,7 +25,7 @@ export default function SettingsPage() {
   }, [activeTab]);
   if (!activeTab) return null;
   return (
-    <div className="min-h-screen my-10 mx-30 font-sans text-gray-900">
+    <div className="min-h-screen  mx-30 font-sans text-gray-900">
       <h1 className="text-3xl font-semibold mb-10">Setting</h1>
 
       <nav className="flex space-x-10 text-sm mb-6 font-normal">
@@ -70,9 +70,16 @@ export default function SettingsPage() {
         >
           List of Team Members
         </button>
-        <a href="#" className="text-gray-600 hover:text-gray-900">
+          <button
+          onClick={() => setActiveTab("verifyinfo")}
+          className={`pb-1 ${
+            activeTab === "verifyinfo"
+              ? "text-[#2f5dd6] font-semibold border-b-2 border-[#2f5dd6]"
+              : "text-gray-600 hover:text-gray-900"
+          }`}
+        >
           Verification Info
-        </a>
+        </button>
       </nav>
 
       {activeTab === "adminInfo" && (
