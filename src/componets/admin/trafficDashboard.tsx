@@ -17,11 +17,12 @@ type DashboardData = {
 const TrafficDashboard = () => {
   const [selectedDate, setSelectedDate] = useState("19 January 2025");
   const [timeFrame, setTimeFrame] = useState("daily");
+  const [selectedCountry, setSelectedCountry] = useState("United States");
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
     null
   );
 
-  const myStateData = [
+  const usaData = [
     { name: "California", code: "CA", value: 20 },
     { name: "New York", code: "NY", value: 10 },
   ]
@@ -73,6 +74,11 @@ const TrafficDashboard = () => {
   ];
 
   const maxSessions = Math.max(...stateSessions.map((s) => s.value));
+  const countryData = selectedCountry === "United States" ? usaData : indiaData;
+  const countryCode = selectedCountry === "United States" ? "USA" : "India";
+  const countryTitle = selectedCountry === "United States" ? "USA" : "India";
+
+  
   if (!dashboardData) {
     return (
       <div className="text-center text-gray-500 py-10">
@@ -256,16 +262,21 @@ const TrafficDashboard = () => {
       </div>
       <div>
         <label className="block text-gray-600  text-sm">Select Country</label>
-        <select className="border border-gray-300 rounded-lg px-3 py-2 w-70 text-sm bg-white shadow-sm">
+        <select
+          className="border border-gray-300 rounded-lg px-3 py-2 w-70 text-sm bg-white shadow-sm"
+          value={selectedCountry}
+          onChange={(e) => setSelectedCountry(e.target.value)}
+        >
           <option>United States</option>
+          <option>India</option>
         </select>
       </div>
       {/* Country Map Section */}
       <div>
         <ChloroplethMap
-          country="India"
-          regionData={indiaData}
-          title="Session by India" />
+          country={countryCode}
+          regionData={countryData}
+          title={`Session by ${countryTitle}`} />
       </div>
     </div>
   );

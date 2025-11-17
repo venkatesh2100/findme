@@ -354,14 +354,14 @@ export default function ChoroplethMap({
         .center([-2, 58.5])
         .parallels([55, 65])
         .scale((containerWidth / 960) * 700)
-        .translate([containerWidth * 0.15, containerHeight * 0.92])
+        .translate([containerWidth * 0.15, containerHeight * 1])
 
       const hawaiiProjection = d3.geoAlbers()
         .rotate([157, 0])
         .center([-3, 19.9])
         .parallels([8, 18])
         .scale((containerWidth / 960) * 1500)
-        .translate([containerWidth * 0.3, containerHeight * 0.95])
+        .translate([containerWidth * 0.3, containerHeight * 1])
 
       const mainPath = d3.geoPath().projection(mainProjection)
       const alaskaPath = d3.geoPath().projection(alaskaProjection)
@@ -702,7 +702,7 @@ export default function ChoroplethMap({
   const sortedStates = Array.from(stateData.values()).sort((a, b) => b.value - a.value)
 
   return (
-    <div className="flex bg-white" style={{ height: '600px', minHeight: '600px' }}>
+    <div className="flex bg-white" style={{ height: '750px', minHeight: '750px' }}>
       <div className="flex-1 flex flex-col p-8">
         <div className="mb-6">
           <h1 className="text-base font-normal text-black">{displayTitle}</h1>
