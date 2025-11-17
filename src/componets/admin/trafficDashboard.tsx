@@ -21,6 +21,30 @@ const TrafficDashboard = () => {
     null
   );
 
+  const myStateData = [
+    { name: "California", code: "CA", value: 20 },
+    { name: "New York", code: "NY", value: 10 },
+  ]
+
+  const indiaData = [
+    { name: "Maharashtra", code: "MH", value: 250 },
+    { name: "Karnataka", code: "KA", value: 180 },
+    { name: "Tamil Nadu", code: "TN", value: 165 },
+    { name: "Delhi", code: "DL", value: 150 },
+    { name: "Uttar Pradesh", code: "UP", value: 140 },
+    { name: "Gujarat", code: "GJ", value: 125 },
+    { name: "West Bengal", code: "WB", value: 110 },
+    { name: "Telangana", code: "TG", value: 95 },
+    { name: "Rajasthan", code: "RJ", value: 85 },
+    { name: "Haryana", code: "HR", value: 75 },
+    { name: "Kerala", code: "KL", value: 70 },
+    { name: "Madhya Pradesh", code: "MP", value: 65 },
+    { name: "Punjab", code: "PB", value: 60 },
+    { name: "Andhra Pradesh", code: "AP", value: 55 },
+    { name: "Bihar", code: "BR", value: 50 },
+    // Add more states as needed
+  ]
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -71,11 +95,10 @@ const TrafficDashboard = () => {
               <span key={label} className="flex items-center gap-1">
                 <button
                   onClick={() => setTimeFrame(label.toLowerCase())}
-                  className={`transition-colors ${
-                    timeFrame === label.toLowerCase()
-                      ? "text-[#2563EB] font-semibold"
-                      : "text-gray-500"
-                  }`}
+                  className={`transition-colors ${timeFrame === label.toLowerCase()
+                    ? "text-[#2563EB] font-semibold"
+                    : "text-gray-500"
+                    }`}
                 >
                   {label}
                 </button>
@@ -239,8 +262,11 @@ const TrafficDashboard = () => {
       </div>
       {/* Country Map Section */}
       <div>
-        <ChloroplethMap />
-      </div> 
+        <ChloroplethMap
+          country="India"
+          regionData={indiaData}
+          title="Session by India" />
+      </div>
     </div>
   );
 };
