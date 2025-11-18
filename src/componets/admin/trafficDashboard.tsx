@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import ChloroplethMap from "./chloropethMap";
 const COLORS = ["#009FFD", "#8CDEFC", "#D3F4FF"];
 const returningColors = ["#009FFD", "#D3F4FF"];
 
@@ -17,34 +16,9 @@ type DashboardData = {
 const TrafficDashboard = () => {
   const [selectedDate, setSelectedDate] = useState("19 January 2025");
   const [timeFrame, setTimeFrame] = useState("daily");
-  const [selectedCountry, setSelectedCountry] = useState("United States");
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
     null
   );
-
-  const usaData = [
-    { name: "California", code: "CA", value: 20 },
-    { name: "New York", code: "NY", value: 10 },
-  ]
-
-  const indiaData = [
-    { name: "Maharashtra", code: "MH", value: 250 },
-    { name: "Karnataka", code: "KA", value: 180 },
-    { name: "Tamil Nadu", code: "TN", value: 165 },
-    { name: "Delhi", code: "DL", value: 150 },
-    { name: "Uttar Pradesh", code: "UP", value: 140 },
-    { name: "Gujarat", code: "GJ", value: 125 },
-    { name: "West Bengal", code: "WB", value: 110 },
-    { name: "Telangana", code: "TG", value: 95 },
-    { name: "Rajasthan", code: "RJ", value: 85 },
-    { name: "Haryana", code: "HR", value: 75 },
-    { name: "Kerala", code: "KL", value: 70 },
-    { name: "Madhya Pradesh", code: "MP", value: 65 },
-    { name: "Punjab", code: "PB", value: 60 },
-    { name: "Andhra Pradesh", code: "AP", value: 55 },
-    { name: "Bihar", code: "BR", value: 50 },
-    // Add more states as needed
-  ]
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,11 +48,6 @@ const TrafficDashboard = () => {
   ];
 
   const maxSessions = Math.max(...stateSessions.map((s) => s.value));
-  const countryData = selectedCountry === "United States" ? usaData : indiaData;
-  const countryCode = selectedCountry === "United States" ? "USA" : "India";
-  const countryTitle = selectedCountry === "United States" ? "USA" : "India";
-
-  
   if (!dashboardData) {
     return (
       <div className="text-center text-gray-500 py-10">
@@ -101,10 +70,11 @@ const TrafficDashboard = () => {
               <span key={label} className="flex items-center gap-1">
                 <button
                   onClick={() => setTimeFrame(label.toLowerCase())}
-                  className={`transition-colors ${timeFrame === label.toLowerCase()
-                    ? "text-[#2563EB] font-semibold"
-                    : "text-gray-500"
-                    }`}
+                  className={`transition-colors ${
+                    timeFrame === label.toLowerCase()
+                      ? "text-[#2563EB] font-semibold"
+                      : "text-gray-500"
+                  }`}
                 >
                   {label}
                 </button>
@@ -262,21 +232,53 @@ const TrafficDashboard = () => {
       </div>
       <div>
         <label className="block text-gray-600  text-sm">Select Country</label>
-        <select
-          className="border border-gray-300 rounded-lg px-3 py-2 w-70 text-sm bg-white shadow-sm"
-          value={selectedCountry}
-          onChange={(e) => setSelectedCountry(e.target.value)}
-        >
+        <select className="border border-gray-300 rounded-lg px-3 py-2 w-70 text-sm bg-white shadow-sm">
           <option>United States</option>
-          <option>India</option>
         </select>
       </div>
       {/* Country Map Section */}
-      <div>
-        <ChloroplethMap
-          country={countryCode}
-          regionData={countryData}
-          title={`Session by ${countryTitle}`} />
+      <div className="bg-white p-4 rounded-xl shadow-sm space-y-4 mt-10">
+        <div className="border-2 flex border-[#D2D6F9] rounded-xl overflow-hidden">
+          <div className="w-full h-[600px]">
+            <div className="ml-4 mt-2 text-sm font-bold">
+              Session by United States
+            </div>
+            <Image
+              src="/USA.png"
+              alt="USA Map"
+              width={600}
+              height={600}
+              className="object-cover w-full h-full"
+            />
+          </div>
+          <div className=" p-4 rounded-xl pr-10 space-y-4">
+            {/* Country Selector */}
+            <div className="flex items-center gap-2 text-gray-700 text-sm font-medium">
+              <ChevronLeft size={16} />
+              <span>USA</span>
+            </div>
+
+            {/* States Sessions */}
+            <div className="space-y-4">
+              {stateSessions.map(({ state, value }) => (
+                <div key={state}>
+                  <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
+                    <div className="flex items-center gap-1">
+                      {state} <ChevronRight size={14} />
+                    </div>
+                    <span>{value}</span>
+                  </div>
+                  <div className="w-full h-2 bg-gray-200 rounded-full mt-1">
+                    <div
+                      className="h-2 bg-blue-400 rounded-full"
+                      style={{ width: `${(value / maxSessions) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

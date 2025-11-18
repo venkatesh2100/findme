@@ -34,7 +34,7 @@ if(!activeTab) return null;
               : "text-gray-600 hover:text-gray-900"
           }`}
         >
-          Add Admin Member
+          Admin Info
         </button>
         <button
           onClick={() => setActiveTab("listAdmin")}
@@ -54,27 +54,19 @@ if(!activeTab) return null;
               : "text-gray-600 hover:text-gray-900"
           }`}
         >
-          Add Team Member
+          Team Info
         </button>
-
-        <button
-          onClick={() => setActiveTab("listTeam")}
-          className={`pb-1 ${
-            activeTab === "listTeam"
-              ? "text-[#2f5dd6] font-semibold border-b-2 border-[#2f5dd6]"
-              : "text-gray-600 hover:text-gray-900"
-          }`}
-        >
+        <a href="#" className="text-gray-600 hover:text-gray-900">
           List of Team Members
-        </button>
+        </a>
         <a href="#" className="text-gray-600 hover:text-gray-900">
           Verification Info
         </a>
       </nav>
 
-      {activeTab === "adminInfo" && <AdminInfoForm setActiveTab={setActiveTab} />}
+      {activeTab === "adminInfo" && <AdminInfoForm />}
       {activeTab === "listAdmin" && <AdminMembersList />}
-      {activeTab === 'teamInfo' && <TeamInfoForm setActiveTab={setActiveTab}/>}
+      {activeTab === "teamInfo" && <TeamInfoForm />}
     </div>
   );
 }
